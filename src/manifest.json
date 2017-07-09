@@ -1,0 +1,31 @@
+{
+	  "name": "translate",					//插件名
+	  "description": "翻译",				//插件说明
+	  "version": "2.0",							//	版本
+	  "permissions": [								//权限，因为要在当前标签页中插件JS代码，tabs的权限是必须的，
+													//还需要可以访问任何网址。
+	    "tabs","http://*/*","https://*/*"
+	  ],
+	  "background": {								//后台运行的代码
+	    "scripts": ["background.js"],
+		"persistent": false
+	  },
+		// "content_scripts": [
+		// 	{
+		// 	"js": ["scripts/cs.js"],
+		// 	// 在什么情况下使用该脚本
+		// 	"matches": [
+		// 		"http://*/*",
+		// 		"https://*/*"
+		// 	],
+		// 	// 什么情况下运行【文档加载开始】
+		// 	"run_at": "document_end"
+		// 	}
+		// ],
+	  "browser_action": {							//浏览器工具栏按钮
+			"default_title": "翻译",
+			"default_icon":"images/translate.png"
+			// "default_popup": "html/popup.html"
+	  },
+	  "manifest_version": 2
+}
