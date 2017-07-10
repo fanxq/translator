@@ -107,7 +107,6 @@ Translate.prototype.dotranslate = function(str, proxy, api, targetLanguage, from
     }).then(function(data){
         dtd.resolve(data);
     }, function(){
-        //toastr.error("提交失败", "操作失败");
         dtd.reject();
     });
     return dtd.promise();
@@ -199,7 +198,7 @@ $(function(){
         var selectObj = window.getSelection();
         if(selectObj){
             var selectedText = selectObj.toString();
-            
+           
             if(selectedText.trim() !== ""){
                 if(resultDiv === undefined){
                     resultDiv = $("<div></div>");
