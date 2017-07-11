@@ -38,7 +38,7 @@ function Translate(proxy){
 }
 
 Translate.prototype.updateTranslate= function(str){
-      //let doc = editor.document, str = doc.getText(editor.selection).trim();
+      
       var self = this;
       return new Promise(function(resolve,reject){
         // if (str.trim() == '')
@@ -54,9 +54,7 @@ Translate.prototype.updateTranslate= function(str){
                             [this.fromLanguage, this.targetLanguage] = [this.targetLanguage, this.fromLanguage];
                         }
                     }
-                    // if (isReverse.error !== 0) {
-                    //     [this.fromLanguage, this.targetLanguage] = [this.targetLanguage, this.fromLanguage];
-                    // }
+                   
                     this.dotranslate(encodeURIComponent(str), this.proxy, this.api, this.targetLanguage, this.fromLanguage).then((TResult)=>{
                         //console.log(result);
                         var rs = '', res = TResult;
@@ -110,51 +108,12 @@ Translate.prototype.dotranslate = function(str, proxy, api, targetLanguage, from
         dtd.reject();
     });
     return dtd.promise();
-    // $.get(translateStr,{"proxy":proxy}).done(function(TResult){
-    //     var rs = '', res = TResult;
-    //     if (api == 'baidu') {
-    //         if (res.error)
-    //             return;
-    //         rs = res.trans_result.data[0].dst;
-    //     }
-    //     else {
-    //         var result = [];
-    //         res.sentences.forEach(function (v) {
-    //             result.push(v.trans);
-    //         });
-    //         rs = result.join(',');
-    //     }
-    //     // translateResult = rs;
-    //     // alert(translateStr);
-    //     //alert(rs);
-    //     return rs;
-    // });
 }
 
 Translate.prototype.languageDetection = function(str, fromLanguage){
-    // return WebRequest.post('http://fanyi.baidu.com/langdetect', { "formData": { "query": str }, "timeout": 500 }).then(function (result) {
-    //     var res = JSON.parse(result.content);
-    //     if (res.error || res.lan == fromLanguage || fromLanguage == '') {
-    //         return false;
-    //     }
-    //     else {
-    //         return true;
-    //     }
-    // }, function () {
-    //     return false;
-    // });
     var self  = this;
     return $.post('https://fanyi.baidu.com/langdetect',{ "query": str , "timeout": 500 }).done(function(result) {
         var res = result;
-        // if (res.error || res.lan == fromLanguage || fromLanguage == '') {
-        //     return false;
-        // }
-        // else {
-        //     return true;
-        // }
-        // if(res.error === 0){
-        //     self.fromLanguage = res.lan;
-        // }
         if(res.error !== 0|| res.lan == fromLanguage || fromLanguage == ''){
             return false;
         }else{
@@ -176,12 +135,11 @@ Translate.prototype. googleTranslate = function(str, targetLanguage, fromLanguag
 }
 $(function(){
     var translateIdle = new Translate();
-   //console.log(window.location.href);
-   var theCurTabUrl = window.location.href;
-   if(theCurTabUrl.startsWith("https")){
-       translateIdle.api = "google";
-       //translateIdle.bLanguageDetection = false;
-   }
+  
+    var theCurTabUrl = window.location.href;
+    if(theCurTabUrl.startsWith("https")){
+        translateIdle.api = "google";
+    }
    var resultDiv;
    document.onmousedown = function(e){
        if(resultDiv){
@@ -216,7 +174,6 @@ $(function(){
                 }
                
                 var bodyFontSize = $("body").css("font-size");
-                // resultDiv.text(selectedText);
                 var divHeight = parseInt(bodyFontSize)+20;
                 resultDiv.css({
                     "top":tPoint.y - divHeight,
@@ -228,7 +185,6 @@ $(function(){
                     resultDiv.text(result);
                     resultDiv.show();
                 });
-                //alert(selectedText);
             }
         }
     }
