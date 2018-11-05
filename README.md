@@ -1,2 +1,3 @@
-# translation-in-webpage
-this is a extension for chrome browser,you can select some text in a webpage,then you will get the translated result;
+# translation
+这是一个谷歌浏览器插件，现实了简单的划词翻译功能
+
