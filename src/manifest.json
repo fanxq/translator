@@ -3,17 +3,13 @@
 	  "description": "划词翻译",
 	  "version": "1.0.0",
 	  "permissions": [	
-	    "tabs","http://*/*","https://*/*"
+	    "tabs","http://*/*","https://*/*","storage"
 		],
 		"icons": {
 			"16": "icon16.png",
 			"48": "icon48.png",
 			"128": "icon128.png"
 		},
-	  "background": {
-			"scripts": ["background.js"],
-			"persistent": false
-	  },
 		"content_scripts": [
 			{
 				"js": ["main.js"],
@@ -26,7 +22,8 @@
 		],
 	  "browser_action": {
 			"default_title": "划词翻译",
-			"default_icon":"icon16.png"
+			"default_icon":"icon16.png",
+			"default_popup": "popup.html"
 	  },
 	  "manifest_version": 2
 }
