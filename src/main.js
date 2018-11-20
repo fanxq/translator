@@ -1,10 +1,11 @@
-import {Translate} from './translate.js';
+//import {Translate} from 'google-translate-api';
+const Translate = require('google-translate-api');
 let startX = 0; let startY = 0;
 let endX = 0; let endY = 0;
 let selectedText;
 let isMouseDown = false;
 let isSelected = false;
-let translator = new Translate();
+//let translator = new Translate();
 let translationOutput = document.createElement('DIV');
 translationOutput.style.display = 'none';
 document.addEventListener("DOMContentLoaded",function(){
@@ -48,20 +49,21 @@ document.addEventListener("DOMContentLoaded",function(){
     document.addEventListener('mousemove',function(e){
         if(isMouseDown){
             var selObj = window.getSelection();
-            if(!isSelected && selObj){
+            var selText = selObj?selObj.toString():'';
+            if(!isSelected && selText){
                 endX = startX = e.pageX;
                 endY = startY = e.pageY;
                 isSelected = true;
-                selectedText = selObj.toString();
+                selectedText = selText;
                 return;
             }
-            if(isSelected && selObj){
-                if(selObj.toString() === selectedText){
+            if(isSelected && selText){
+                if(selText === selectedText){
                     return;
                 }
                 endX = e.pageX;
                 endY = e.pageY;
-                selectedText = selObj.toString();
+                selectedText = selText;
                 console.log("x:",endX,"y2:",endY,"text:",selectedText);
             }
         }
@@ -77,7 +79,7 @@ document.addEventListener("DOMContentLoaded",function(){
 			console.log(e);
         }
         var left = endX - (endX - startX)/2 - 6;
-		var top = Math.max(endY, startY) + parseInt(fontSize);
+		var top =  startY + parseInt(fontSize);
         new Promise(function(resolve,reject){
             chrome.storage.local.get({'enable':true}, function(result){
                 resolve(result);
@@ -86,10 +88,6 @@ document.addEventListener("DOMContentLoaded",function(){
             if(!result.enable){
                 return;
             }
-            // var tPoint = {
-            //     x:e.pageX,
-            //     y:e.pageY
-            // }
             var selection = window.getSelection();
             if(selection){
                 var selectedText = selection.toString();
@@ -98,27 +96,32 @@ document.addEventListener("DOMContentLoaded",function(){
                         translationOutput.style.display = 'block';
                         translationOutput.style.position = 'absolute';
                         translationOutput.style.zIndex = '2147483647';
-                        // translationOutput.style.top = tPoint.y + 10 + 'px';
-                        // translationOutput.style.left = tPoint.x+'px';
                         translationOutput.style.top = top + 'px';
                         translationOutput.style.left = left + 'px';
                         output.innerText = "翻译中......";
-                        translator.doTranslate(selectedText).then(function(result){
-                            if(result){ 
-                                output.innerText  = result;
+                        Translate(selectedText, {from:'auto', to: 'en'}).then(res => {
+                            console.log(res.text);
+                            console.log(res.from.language.iso);
+                            if(res.from.language.iso !== 'en'){
+                                output.innerText  = res.text;
                             }else{
-                                output.innerText = '翻译出错了！';
-                            }
-                        }).catch(function(e){
+                                Translate(selectedText,{form:'auto',to:'zh-CN'}).then(res=>{
+                                    output.innerText = res.text;
+                                });
+                            }                  
+                        }).catch(err => {
+                            console.error(err);
                             output.innerText = '翻译出错了！';
                         });
                     }
                 }
             }
+        }).then(function(){
+            isMouseDown = false;
+            selectedText = '';
+            isSelected = false;
+            startX = startY = endX = endY = 0; 
         });
-        isMouseDown = false;
-        selectedText = '';
-        isSelected = false;
-        //startX = startY = endX = endY = 0; 
+        
     });
 });
