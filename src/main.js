@@ -9,7 +9,7 @@ function createScript(content){
     document.getElementById('crx-script') && document.body.removeChild(document.getElementById('crx-script'));
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    script.innerText = 'window.TKK=' + content +';';
+    script.innerText = 'window.TKK=\"' + content +'\";';
     script.setAttribute('id','crx-script');
     document.body.appendChild(script);
 }
