@@ -1,11 +1,18 @@
-//import {Translate} from 'google-translate-api';
 const Translate = require('google-translate-api');
 let startX = 0; let startY = 0;
 let endX = 0; let endY = 0;
 let selectedText;
 let isMouseDown = false;
 let isSelected = false;
-//let translator = new Translate();
+let isTokenLoaded = false;
+function createScript(content){
+    document.getElementById('crx-script') && document.body.removeChild(document.getElementById('crx-script'));
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.innerText = 'window.TKK=' + content +';';
+    script.setAttribute('id','crx-script');
+    document.body.appendChild(script);
+}
 let translationOutput = document.createElement('DIV');
 translationOutput.style.display = 'none';
 document.addEventListener("DOMContentLoaded",function(){
@@ -99,6 +106,22 @@ document.addEventListener("DOMContentLoaded",function(){
                         translationOutput.style.top = top + 'px';
                         translationOutput.style.left = left + 'px';
                         output.innerText = "翻译中......";
+                        var TKK= localStorage.getItem('TKK');
+                        if(TKK){
+                            if(!document.getElementById('crx-script')){
+                                createScript(TKK);
+                            }else{
+                                var now = Math.floor(Date.now() / 3600000);
+                                if (Number(TKK.split('.')[0]) === now) {
+                                    if(!isTokenLoaded){
+                                        createScript(TKK);
+                                        isTokenLoaded = true;
+                                    }
+                                }else{
+                                    createScript(TKK);
+                                } 
+                            } 
+                        }
                         Translate(selectedText, {from:'auto', to: 'en'}).then(res => {
                             console.log(res.text);
                             console.log(res.from.language.iso);
