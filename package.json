@@ -16,7 +16,7 @@
     "chrome-extension"
   ],
   "author": "fanxq",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/fanxq/translation/issues"
   },
