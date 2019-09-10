@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack && gulp",
-    "dev":"gulp && webpack --mode development --watch"
+    "dev": "gulp && webpack --mode development --watch"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,6 @@
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {
-    "google-translate-api": "git+https://github.com/fanxq/google-translate-api.git"
+    "google-translate-api": "git+https://github.com/fanxq/google-translate-api.git#a25a098eafe3ebe7e71ba30aa55f18f45f9a20d7"
   }
 }
