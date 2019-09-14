@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
             border:1px solid rgba(0, 0, 0, 0.2);
             box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.35);
             background-color: white;
+            color: #000;
         }
         .popup::after{
             content:'';
