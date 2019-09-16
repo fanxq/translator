@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         if (res.from.language.iso !== 'en') {
           return res.text;
         } else {
-          return Translate(selectedText, {
+          return Translate(request.text, {
             form: 'auto',
             to: 'zh-CN'
           }).then(res => {
