@@ -1,4 +1,3 @@
-const Translate = require('google-translate-api');
 let startX = 0;
 let startY = 0;
 let endX = 0;
@@ -6,18 +5,7 @@ let endY = 0;
 let selectedText;
 let isMouseDown = false;
 let isSelected = false;
-let isTokenLoaded = false;
 
-function createOrUpdateToken(content) {
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.innerText = 'window.TKK=\"' + content + '\";';
-    script.setAttribute('id', 'crx-script');
-    script.onload = function () {
-        document.body.removeChild(script);
-    }
-    document.body.appendChild(script);
-}
 let translationOutput = document.createElement('DIV');
 translationOutput.style.display = 'none';
 document.addEventListener("DOMContentLoaded", function () {
@@ -125,42 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             action: 'translate',
                             text: selectedText
                         });
-                        // var TKK = localStorage.getItem('TKK');
-                        // if (TKK) {
-                        //     if (window.TKK) {
-                        //         createOrUpdateToken(TKK);
-                        //     } else {
-                        //         var now = Math.floor(Date.now() / 3600000);
-                        //         if (Number(TKK.split('.')[0]) === now) {
-                        //             if (!isTokenLoaded) {
-                        //                 createOrUpdateToken(TKK);
-                        //                 isTokenLoaded = true;
-                        //             }
-                        //         } else {
-                        //             createOrUpdateToken(TKK);
-                        //         }
-                        //     }
-                        // }
-                        // Translate(selectedText, {
-                        //     from: 'auto',
-                        //     to: 'en'
-                        // }).then(res => {
-                        //     console.log(res.text);
-                        //     console.log(res.from.language.iso);
-                        //     if (res.from.language.iso !== 'en') {
-                        //         output.innerText = res.text;
-                        //     } else {
-                        //         Translate(selectedText, {
-                        //             form: 'auto',
-                        //             to: 'zh-CN'
-                        //         }).then(res => {
-                        //             output.innerText = res.text;
-                        //         });
-                        //     }
-                        // }).catch(err => {
-                        //     console.error(err);
-                        //     output.innerText = '翻译出错了！';
-                        // });
                     }
                 }
             }
@@ -170,6 +122,5 @@ document.addEventListener("DOMContentLoaded", function () {
             isSelected = false;
             startX = startY = endX = endY = 0;
         });
-
     });
 });
