@@ -29,6 +29,6 @@
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {
-    "google-translate-api": "git+https://github.com/fanxq/google-translate-api.git#a25a098eafe3ebe7e71ba30aa55f18f45f9a20d7"
+    "google-translate-api": "git+https://github.com/fanxq/google-translate-api.git#5b2a761884078ede40d0bd96086f6f2350618b8d"
   }
 }
