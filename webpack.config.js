@@ -10,6 +10,16 @@ module.exports = {
     path: path.resolve(__dirname, 'out'),
     filename: '[name].js'
   },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'css-loader'
+        ]
+      }
+    ]
+  },
   plugins: [
     new WebpackChromeReloaderPlugin({
       port: 9091,

@@ -1,0 +1,21 @@
+.popup{
+  font-size:14px;
+  padding:5px 5px;
+  position:relative;
+  border:1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.35);
+  background-color: white;
+  color: #000;
+}
+.popup::after{
+  content:'';
+  position:absolute;
+  left: 6px;
+  top: -6px;
+  width:10px;
+  height:10px;
+  transform: rotate(45deg);
+  background-color: white;
+  border-top:1px solid rgba(0, 0, 0, 0.2);
+  border-left:1px solid rgba(0, 0, 0, 0.2);
+}
