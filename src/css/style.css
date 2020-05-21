@@ -1,21 +1,20 @@
-.popup{
-  font-size:14px;
-  padding:5px 5px;
+.content{
+  font-size: 14px !important;
+  margin: 10px 10px;
   position:relative;
-  border:1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.35);
+  padding-right: 5px;
   background-color: white;
   color: #000;
+  max-width: 300px;
+  max-height: 200px;
+  overflow-y: auto;
 }
-.popup::after{
-  content:'';
-  position:absolute;
-  left: 6px;
-  top: -6px;
-  width:10px;
-  height:10px;
-  transform: rotate(45deg);
-  background-color: white;
-  border-top:1px solid rgba(0, 0, 0, 0.2);
-  border-left:1px solid rgba(0, 0, 0, 0.2);
+
+.content::-webkit-scrollbar {
+  width: 4px;
+}
+.content::-webkit-scrollbar-thumb {
+  width: 4px;
+  background-color: #ccc;
+  border-radius: 4px;
 }

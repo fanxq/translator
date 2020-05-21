@@ -26,7 +26,7 @@
 		],
 	  "browser_action": {
 			"default_title": "划词翻译",
-			"default_icon":"icon16.png",
+			"default_icon":"icon48.png",
 			"default_popup": "popup.html"
 		},
 		"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
