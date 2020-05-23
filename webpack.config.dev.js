@@ -1,9 +1,9 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WebpackChromeReloaderPlugin = require('webpack-chrome-extension-reloader');
+
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
     main: './src/main.js',
     background: './src/background.js'
@@ -23,10 +23,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin({
-      verbose: true,
-      cleanOnceBeforeBuildPatterns: [path.resolve(__dirname, './out/**/*')]
-    }),
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, './src/manifest.json'),
