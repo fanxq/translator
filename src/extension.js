@@ -51,6 +51,7 @@ class TranslationExtension {
     this.widget.style.backgroundColor = '#fff';
     this.widget.style.boxShadow = '0 2px 10px 0 rgba(0, 0, 0, 0.2)';
     this.widget.style.borderRadius = '5px';
+    this.widget.style.zIndex = Number.MAX_SAFE_INTEGER;
     let shadowRoot = this.widget.attachShadow({
       mode: 'open'
     });
@@ -113,6 +114,7 @@ class TranslationExtension {
           }
           this.endPoint.x = e.pageX;
           this.endPoint.y = e.pageY;
+          this.selectedText = selectedText;
         }
       }
     });
@@ -128,12 +130,21 @@ class TranslationExtension {
     }
   }
 
+  getFontsizeOfSelectedText(selection) {
+    let fontSize = 14;
+    try {
+      fontSize = window.getComputedStyle(selection.focusNode.nodeType === Node.TEXT_NODE ? selection.focusNode.parentNode : selection.focusNode).fontSize;
+    } catch (error) {
+      console.log(error.message);
+    }
+    return fontSize;
+  }
   watchMouseupOnDocument() {
     document.addEventListener('mouseup', (e) => {
       if (!this.isSelected) {
         return;
       }
-      let left = this.endPoint.x - (this.endPoint.x -this.startPoint.x) / 2 - 6;
+      
       new Promise((resolve, reject) => {
         chrome.storage.local.get({
           'enable': true
@@ -149,14 +160,17 @@ class TranslationExtension {
         if (!selectedText) {
           return;
         }
-        let anchorOffsetToBody = this.getOffsetToBody(selection.anchorNode.nodeType === Node.TEXT_NODE ? selection.anchorNode.parentNode : selection.anchorNode);
-        let focusOffsetToBody = this.getOffsetToBody(selection.focusNode.nodeType === Node.TEXT_NODE ? selection.focusNode.parentNode : selection.focusNode);
-        let anchorPos = new Point(anchorOffsetToBody.left, anchorOffsetToBody.bottom);
-        let focusPos = new Point(focusOffsetToBody.left, focusOffsetToBody.bottom);
-        let pos = Point.max(anchorPos, focusPos);
+        
+        // let anchorOffsetToBody = this.getOffsetToBody(selection.anchorNode.nodeType === Node.TEXT_NODE ? selection.anchorNode.parentNode : selection.anchorNode);
+        // let focusOffsetToBody = this.getOffsetToBody(selection.focusNode.nodeType === Node.TEXT_NODE ? selection.focusNode.parentNode : selection.focusNode);
+        // let anchorPos = new Point(anchorOffsetToBody.left, anchorOffsetToBody.bottom);
+        // let focusPos = new Point(focusOffsetToBody.left, focusOffsetToBody.bottom);
+        // let pos = Point.max(anchorPos, focusPos);
+        let left = this.endPoint.x - (this.endPoint.x -this.startPoint.x) / 2 - 6;
+        let top = this.endPoint.y + parseInt(this.getFontsizeOfSelectedText(selection), 10);
         this.showWidget({
           left: left,
-          top: pos.y + 10
+          top: top
         });
 
         chrome.runtime.sendMessage({
