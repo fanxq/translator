@@ -7,7 +7,7 @@
   color: #000;
   max-width: 300px;
   max-height: 200px;
-  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .content::-webkit-scrollbar {

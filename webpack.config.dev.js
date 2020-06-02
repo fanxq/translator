@@ -14,11 +14,35 @@ module.exports = {
   },
   module: {
     rules: [
+      { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" },
       {
         test: /\.css$/,
         use: [
-          'css-loader'
-        ]
+          {
+            loader: 'style-loader',
+            options: {
+              injectType: 'lazyStyleTag',
+              insert: function insertAtTop(element) {
+                var parent = document.querySelector('#TX_SH_0001').shadowRoot;
+                // eslint-disable-next-line no-underscore-dangle
+                var lastInsertedElement =
+                  window._lastElementInsertedByStyleLoader;
+
+                if (!lastInsertedElement) {
+                  parent.insertBefore(element, parent.firstChild);
+                } else if (lastInsertedElement.nextSibling) {
+                  parent.insertBefore(element, lastInsertedElement.nextSibling);
+                } else {
+                  parent.appendChild(element);
+                }
+
+                // eslint-disable-next-line no-underscore-dangle
+                window._lastElementInsertedByStyleLoader = element;
+              }
+            }
+          },
+          'css-loader',
+        ],
       }
     ]
   },

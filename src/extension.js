@@ -1,4 +1,5 @@
 import extensionStyle from './css/style.css';
+import Vue from 'vue';
 
 class Point {
   constructor(x, y) {
@@ -52,16 +53,38 @@ class TranslationExtension {
     this.widget.style.boxShadow = '0 2px 10px 0 rgba(0, 0, 0, 0.2)';
     this.widget.style.borderRadius = '5px';
     this.widget.style.zIndex = Number.MAX_SAFE_INTEGER;
+    this.widget.setAttribute('id', 'TX_SH_0001');
     let shadowRoot = this.widget.attachShadow({
       mode: 'open'
     });
-    let style = document.createElement('style');
-    style.textContent = extensionStyle.toString();
-    shadowRoot.appendChild(style);
-    this.widgetContent = document.createElement('div');
-    this.widgetContent.setAttribute('class', 'content');
-    shadowRoot.appendChild(this.widgetContent);
+    // let style = document.createElement('style');
+    // style.textContent = extensionStyle.toString();
+    // shadowRoot.appendChild(style);
+    // this.widgetContent = document.createElement('div');
+    // this.widgetContent.setAttribute('class', 'content');
+    // shadowRoot.appendChild(this.widgetContent);
+    this.widgetContent = this.initWidgetContent();
+    shadowRoot.appendChild(this.widgetContent.$mount().$el);
     document.body.appendChild(this.widget);
+    extensionStyle.use(); // 延迟加载css
+  }
+
+  initWidgetContent() {
+    return new Vue({
+      data() {
+        return {
+          result: '翻译中......'
+        }
+      },
+      methods: {
+        setResult(res) {
+          this.result = res;
+        }
+      },
+      render() {
+        return <div class="content">{this.result}</div>
+      }
+    });
   }
 
   showWidget(pos) {
@@ -69,7 +92,8 @@ class TranslationExtension {
     this.widget.style.position = 'absolute';
     this.widget.style.top = `${pos.top}px`;
     this.widget.style.left = `${pos.left}px`;
-    this.widgetContent.innerText = '翻译中......';
+    // this.widgetContent.innerText = '翻译中......';
+    this.widgetContent.setResult('翻译中......');
   }
 
   hideWidget() {
@@ -82,7 +106,8 @@ class TranslationExtension {
     let that = this;
     chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       if (request && request.action === 'translate') {
-        that.widgetContent.innerText = request.result;
+        // that.widgetContent.innerText = request.result;
+        that.widgetContent.setResult(request.result);
       }
     });
   }
@@ -161,11 +186,6 @@ class TranslationExtension {
           return;
         }
         
-        // let anchorOffsetToBody = this.getOffsetToBody(selection.anchorNode.nodeType === Node.TEXT_NODE ? selection.anchorNode.parentNode : selection.anchorNode);
-        // let focusOffsetToBody = this.getOffsetToBody(selection.focusNode.nodeType === Node.TEXT_NODE ? selection.focusNode.parentNode : selection.focusNode);
-        // let anchorPos = new Point(anchorOffsetToBody.left, anchorOffsetToBody.bottom);
-        // let focusPos = new Point(focusOffsetToBody.left, focusOffsetToBody.bottom);
-        // let pos = Point.max(anchorPos, focusPos);
         let left = this.endPoint.x - (this.endPoint.x -this.startPoint.x) / 2 - 6;
         let top = this.endPoint.y + parseInt(this.getFontsizeOfSelectedText(selection), 10);
         this.showWidget({
