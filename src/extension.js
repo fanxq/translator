@@ -1,5 +1,6 @@
 import extensionStyle from './css/style.css';
 import Vue from 'vue';
+const langs = require('../node_modules/google-translate-api/languages');
 
 class Point {
   constructor(x, y) {
@@ -63,26 +64,154 @@ class TranslationExtension {
     // this.widgetContent = document.createElement('div');
     // this.widgetContent.setAttribute('class', 'content');
     // shadowRoot.appendChild(this.widgetContent);
+    // this.widget.addEventListener('mousedown', (e)=>{
+    //   console.log('stop');
+    //   e.stopPropagation();
+    // });
     this.widgetContent = this.initWidgetContent();
     shadowRoot.appendChild(this.widgetContent.$mount().$el);
     document.body.appendChild(this.widget);
     extensionStyle.use(); // 延迟加载css
   }
 
-  initWidgetContent() {
-    return new Vue({
+  getLanguageSettingDialogComponet() {
+    let langList = [];
+    Object.keys(langs).forEach(x => {
+      if (!~['isSupported', 'getCode'].indexOf(x)) {
+        langList.push({code: x, name: langs[x]});
+      }
+    });
+    return {
+      props:{
+        value: {
+          type: String,
+          require: true
+        },
+        show: {
+          type: Boolean,
+          default: false
+        }
+      },
       data() {
         return {
-          result: '翻译中......'
+          langs: langList
+        }
+      },
+      watch: {
+        show(val) {
+          if (val) {
+            this.showDialog();
+          } else {
+            this.closeDialog();
+          }
+        }
+      },
+      methods: {
+        onItemSeleted(code) {
+          console.log(code);
+          this.$emit('input', code);
+        },
+        showDialog() {
+          this.$refs.dlg.showModal();
+        },
+        closeDialog() {
+          this.$refs.dlg.close();
+        },
+        close() {
+          this.$emit('update:show', false);
+        }
+      },
+      render() {
+        return (
+        <dialog ref="dlg">
+          <header>
+            <h3>选择语言</h3>
+            <button vOn:click={this.close} >关闭</button>
+          </header>
+          <section class="body">
+            <ul>
+              {
+                this.langs.map(x => <li vOn:click={() => this.onItemSeleted(x.code)} class={x.code === this.value ? 'active' : ''}>{x.name}</li>)
+              }
+            </ul>
+          </section>
+        </dialog>)
+      }
+    }
+  }
+  initWidgetContent() {
+    let dialogComponent = this.getLanguageSettingDialogComponet();
+    return new Vue({
+      components: {
+        'set-lang-dialog': dialogComponent
+      },
+      data() {
+        return {
+          result: '翻译中......',
+          langs: langs,
+          defaultCode: 'en',
+          disable: true,
+          showDialog: false,
+          direction: 'from',
+          fromCode: 'auto',
+          fromLang: 'Automatic',
+          toCode: 'en',
+          toLang: 'English',
+          selectedText: ''
         }
       },
       methods: {
         setResult(res) {
           this.result = res;
+        },
+        noop() {
+          console.log('stop click event');
+        },
+        openSelectLanguageDialog(direction) {
+          this.showDialog = true;
+          this.direction = direction;
+          if (direction === 'to') {
+            this.defaultCode = this.toCode;
+          } else {
+            this.defaultCode = this.fromCode;
+          }
+        },
+        sendTranslateRequest() {
+          chrome.runtime.sendMessage({
+            action: 'translate',
+            text: this.selectedText,
+            from: this.fromCode,
+            to: this.toCode
+          });
+        },
+        setSelectedText(text) {
+          this.selectedText = text;
         }
       },
+      watch: {
+        defaultCode(val) {
+          console.log(val);
+          if (this.direction === 'to') {
+            this.toLang = langs[val];
+            this.toCode = val;
+          } else {
+            this.fromCode = val;
+            this.fromLang = langs[val];
+          }
+        },
+       
+      },
       render() {
-        return <div class="content">{this.result}</div>
+        return <div class="content" vOn:mousedown_stop={this.noop}>
+          <div class="toolbar">
+            <button class="btn" vOn:click={() => this.openSelectLanguageDialog('from')}>{this.fromLang}</button>
+            <span style="font-size:20px;">&#8407;</span>
+            <button class="btn" vOn:click={() => this.openSelectLanguageDialog('to')}>{this.toLang}</button>
+            <button class="btn" vOn:click={ this.sendTranslateRequest }>翻译</button>
+          </div>
+          <div>{this.result}</div>
+          <set-lang-dialog show={this.showDialog} {...{on:{'update:show':(val) => this.showDialog = val}}} vModel={this.defaultCode}></set-lang-dialog>
+        </div>
       }
     });
   }
@@ -185,7 +314,7 @@ class TranslationExtension {
         if (!selectedText) {
           return;
         }
-        
+        this.widgetContent.setSelectedText(selectedText);
         let left = this.endPoint.x - (this.endPoint.x -this.startPoint.x) / 2 - 6;
         let top = this.endPoint.y + parseInt(this.getFontsizeOfSelectedText(selection), 10);
         this.showWidget({
@@ -193,10 +322,10 @@ class TranslationExtension {
           top: top
         });
 
-        chrome.runtime.sendMessage({
-          action: 'translate',
-          text: selectedText
-        });
+        // chrome.runtime.sendMessage({
+        //   action: 'translate',
+        //   text: selectedText
+        // });
       }).then(() => {
         this.startPoint = new Point(0, 0);
         this.endPoint = new Point(0, 0);
