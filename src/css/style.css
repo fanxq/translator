@@ -7,7 +7,9 @@
   color: #000;
   max-width: 300px;
   max-height: 200px;
-  overflow-x: hidden;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 ::-webkit-scrollbar {
@@ -73,10 +75,19 @@ dialog .body ul li.active {
   border: 2px solid #4b8bf4;
   background-color: #fff;
   padding: 5px;
-  margin: 0 10px;
 }
 
 .toolbar {
   display: flex;
   align-items: center;
+  justify-content: space-around;
+}
+
+.translate-result {
+  margin: 10px 0px;
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  padding: 5px;
+  overflow-x: hidden;
+  flex: 1;
 }

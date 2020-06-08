@@ -205,11 +205,13 @@ class TranslationExtension {
         return <div class="content" vOn:mousedown_stop={this.noop}>
           <div class="toolbar">
             <button class="btn" vOn:click={() => this.openSelectLanguageDialog('from')}>{this.fromLang}</button>
-            <span style="font-size:20px;">&#8407;</span>
+            <span style="font-size:20px;display:block;margin:0px 10px;">&#8407;</span>
             <button class="btn" vOn:click={() => this.openSelectLanguageDialog('to')}>{this.toLang}</button>
-            <button class="btn" vOn:click={ this.sendTranslateRequest }>翻译</button>
+            <button class="btn" style="margin-left: 10px;" vOn:click={ this.sendTranslateRequest }>翻译</button>
           </div>
-          <div>{this.result}</div>
+          <div class="translate-result">
+            {this.result}
+          </div>
           <set-lang-dialog show={this.showDialog} {...{on:{'update:show':(val) => this.showDialog = val}}} vModel={this.defaultCode}></set-lang-dialog>
         </div>
       }
