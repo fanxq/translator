@@ -203,6 +203,10 @@ class TranslationExtension {
       },
       render() {
         return <div class="content" vOn:mousedown_stop={this.noop}>
+          <div class="titlebar">
+            <img src={chrome.extension.getURL('icon128.png')} style="height:20px;width:20px;" />
+            <h3 style="margin: 0px 10px;">划词翻译</h3>
+          </div>
           <div class="toolbar">
             <button class="btn" vOn:click={() => this.openSelectLanguageDialog('from')}>{this.fromLang}</button>
             <span style="font-size:20px;display:block;margin:0px 10px;">&#8407;</span>

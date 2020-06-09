@@ -80,7 +80,7 @@ dialog .body ul li.active {
 .toolbar {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .translate-result {
@@ -90,4 +90,10 @@ dialog .body ul li.active {
   padding: 5px;
   overflow-x: hidden;
   flex: 1;
+}
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
