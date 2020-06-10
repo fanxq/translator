@@ -50,8 +50,8 @@ export default {
     return (
     <dialog ref="dlg">
       <header>
-        <span style="display: flex; align-items: center;">
-          <img src={chrome.extension.getURL('icon128.png')} style="height:20px;width:20px;margin-right:10px;"/>
+        <span class="titlebar">
+          <img src={chrome.extension.getURL('icon128.png')} class="logo"/>
           <h3>选择语言</h3>
         </span>
         <button class="btn-close" vOn:click={this.close} title="关闭">&#x2716;</button>

@@ -1,15 +1,14 @@
 $defaultColor: #4b8bf4;
 
-*{
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-  &::-webkit-scrollbar-thumb {
-    width: 4px;
-    background-color: #ccc;
-    border-radius: 4px;
-  }
+::-webkit-scrollbar {
+  width: 4px;
 }
+::-webkit-scrollbar-thumb {
+  width: 4px;
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
 
 .btn {
   outline: none;
@@ -33,9 +32,19 @@ dialog {
     justify-content: space-between;
     align-items: flex-start;
     margin: 10px 0;
-    h3 {
-      margin: 0;
+    .titlebar{
+      display: flex; 
+      align-items: center;
+      .logo {
+        height:20px;
+        width:20px;
+        margin-right:10px;
+      }
+      h3 {
+        margin: 0;
+      }
     }
+    
     .btn-close {
       border: none;
       font-weight: bold;
@@ -89,11 +98,28 @@ dialog {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    .logo {
+      height:20px;
+      width:20px;
+      margin-right:10px;
+    }
+    h3 {
+      margin: 0;
+    }
   }
   .toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    .btn-group {
+      display: flex;
+      margin-right: 10px;
+      .text-block {
+        font-size: 30px;
+        display:inline-block;
+        margin:0px 10px;
+      }
+    }
   }
   .translate-result {
     margin: 10px 0px;

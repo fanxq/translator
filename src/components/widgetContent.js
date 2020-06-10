@@ -65,16 +65,16 @@ export default {
   render() {
     return <div class="content" vOn:mousedown_stop={this.noop}>
       <div class="titlebar">
-        <img src={chrome.extension.getURL('icon128.png')} style="height:20px;width:20px;" />
-        <h3 style="margin: 0px 10px;">划词翻译</h3>
+        <img src={chrome.extension.getURL('icon128.png')} class="logo" />
+        <h3>划词翻译</h3>
       </div>
       <div class="toolbar">
-        <div style="display: flex;">
+        <div class="btn-group">
           <button class="btn" vOn:click={() => this.openSelectLanguageDialog('from')}>{this.fromLang}</button>
-          <span style="font-size:20px;display:block;margin:0px 10px;">&#8407;</span>
+          <span class="text-block">&#8407;</span>
           <button class="btn" vOn:click={() => this.openSelectLanguageDialog('to')}>{this.toLang}</button>
         </div>
-        <button class="btn" style="margin-left: 10px;" vOn:click={ this.sendTranslateRequest }>翻译</button>
+        <button class="btn" vOn:click={ this.sendTranslateRequest }>翻译</button>
       </div>
       <div class="translate-result">
         {this.result}
