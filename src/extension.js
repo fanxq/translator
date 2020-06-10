@@ -1,4 +1,4 @@
-import extensionStyle from './css/style.css';
+import extensionStyle from './css/style.scss';
 import Vue from 'vue';
 import widgetContent from './components/widgetContent';
 
