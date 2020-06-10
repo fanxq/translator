@@ -34,8 +34,13 @@ dialog header {
   padding: 0;
   display: flex;
   justify-content: space-between;
-  height: 30px;
-  align-items: center;
+  align-items: flex-start;
+  margin: 10px 0;
+}
+
+dialog header h3{
+  margin: 0;
+  display: inline-block;
 }
 
 dialog .body {
@@ -75,6 +80,7 @@ dialog .body ul li.active {
   border: 2px solid #4b8bf4;
   background-color: #fff;
   padding: 5px;
+  display: inline-block;
 }
 
 .toolbar {
@@ -96,4 +102,13 @@ dialog .body ul li.active {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+}
+
+.btn-close {
+  border: none;
+  font-weight: bold;
+  background-color: transparent;
+  appearance: none;
+  outline: none;
+  color: #dd5145;
 }
