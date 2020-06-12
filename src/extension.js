@@ -41,7 +41,6 @@ class TranslationExtension {
 
   init() {
     this.initWidget();
-    // this.watchChromeRuntimeMessage();
     this.watchMousedownOnDocument();
     this.watchMousemoveOnDocument();
     this.watchMouseupOnDocument();
@@ -58,16 +57,7 @@ class TranslationExtension {
     let shadowRoot = this.widget.attachShadow({
       mode: 'open'
     });
-    // let style = document.createElement('style');
-    // style.textContent = extensionStyle.toString();
-    // shadowRoot.appendChild(style);
-    // this.widgetContent = document.createElement('div');
-    // this.widgetContent.setAttribute('class', 'content');
-    // shadowRoot.appendChild(this.widgetContent);
-    // this.widget.addEventListener('mousedown', (e)=>{
-    //   console.log('stop');
-    //   e.stopPropagation();
-    // });
+    
     this.widgetContent = this.initWidgetContent();
     shadowRoot.appendChild(this.widgetContent.$mount().$el);
     document.body.appendChild(this.widget);
@@ -107,16 +97,6 @@ class TranslationExtension {
       this.widget.style.display = 'none';
     }
   }
-
-  // watchChromeRuntimeMessage() {
-  //   let that = this;
-  //   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  //     if (request && request.action === 'translate') {
-  //       // that.widgetContent.innerText = request.result;
-  //       that.widgetContent.setResult(request.result);
-  //     }
-  //   });
-  // }
 
   watchMousedownOnDocument() {
     document.addEventListener('mousedown', (e) => {
