@@ -41,7 +41,7 @@ class TranslationExtension {
 
   init() {
     this.initWidget();
-    this.watchChromeRuntimeMessage();
+    // this.watchChromeRuntimeMessage();
     this.watchMousedownOnDocument();
     this.watchMousemoveOnDocument();
     this.watchMouseupOnDocument();
@@ -81,20 +81,16 @@ class TranslationExtension {
       },
       data() {
         return {
-          selectedText: '',
-          result: ''
+          selectedText: ''
         }
       },
       methods: {
         setSelectedText(val) {
           this.selectedText = val;
-        },
-        setResult(res) {
-          this.result = res;
-        },
+        }
       },
       render() {
-        return <widget-content selectedText={this.selectedText} result={this.result}></widget-content>
+        return <widget-content selectedText={this.selectedText}></widget-content>
       }
     });
   }
@@ -104,8 +100,6 @@ class TranslationExtension {
     this.widget.style.position = 'absolute';
     this.widget.style.top = `${pos.top}px`;
     this.widget.style.left = `${pos.left}px`;
-    // this.widgetContent.innerText = '翻译中......';
-    this.widgetContent.setResult('翻译中......');
   }
 
   hideWidget() {
@@ -114,15 +108,15 @@ class TranslationExtension {
     }
   }
 
-  watchChromeRuntimeMessage() {
-    let that = this;
-    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-      if (request && request.action === 'translate') {
-        // that.widgetContent.innerText = request.result;
-        that.widgetContent.setResult(request.result);
-      }
-    });
-  }
+  // watchChromeRuntimeMessage() {
+  //   let that = this;
+  //   chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  //     if (request && request.action === 'translate') {
+  //       // that.widgetContent.innerText = request.result;
+  //       that.widgetContent.setResult(request.result);
+  //     }
+  //   });
+  // }
 
   watchMousedownOnDocument() {
     document.addEventListener('mousedown', (e) => {

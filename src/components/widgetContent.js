@@ -8,10 +8,6 @@ export default {
     selectedText: {
       type: String,
       default: ''
-    },
-    result: {
-      type: String,
-      default: ''
     }
   },
   data() {
@@ -25,7 +21,25 @@ export default {
       fromLang: 'Automatic',
       toCode: 'en',
       toLang: '英文',
+      result: ''
     }
+  },
+  mounted() {
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request) {
+        switch (request.action) {
+          case 'translate':
+            this.result = request.result;
+            break;
+          case 'getSrcLang':
+            this.fromCode = request.result.toLowerCase();
+            this.fromLang = this.langs[this.fromCode];
+            break;
+          default:
+            break;
+        }
+      }
+    });
   },
   methods: {
     noop() {
@@ -60,7 +74,15 @@ export default {
         this.fromLang = this.langs[val];
       }
     },
-   
+    selectedText(val) {
+      if (val) {
+        this.result = `原文：${val}`;
+        chrome.runtime.sendMessage({
+          action: 'getSrcLang',
+          text: val
+        });
+      }
+    }
   },
   render() {
     return <div class="content" vOn:mousedown_stop={this.noop}>
