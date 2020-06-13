@@ -3,7 +3,7 @@
 	  "description": "划词翻译",
 	  "version": "1.0.0",
 	  "permissions": [	
-	    "tabs","http://*/*","https://*/*","storage"
+	    "tabs", "<all_urls>", "activeTab", "storage"
 		],
 		"icons": {
 			"16": "icon16.png",

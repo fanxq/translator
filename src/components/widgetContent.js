@@ -1,5 +1,6 @@
 import languageMap from '../config/languages';
 import dialogComponent from './languageSettingDialog';
+import Cropper from './cropper';
 export default {
   components: {
     'set-lang-dialog': dialogComponent
@@ -35,6 +36,22 @@ export default {
             this.fromCode = request.result.toLowerCase();
             this.fromLang = this.langs[this.fromCode];
             break;
+          case 'captureScreen':
+            {
+              let image = new Image();
+              image.onload = () => {
+                let canvas = document.createElement('canvas');
+                canvas.width = request.rect.w;
+                canvas.height = request.rect.h;
+                let ctx = canvas.getContext('2d');
+                ctx.drawImage(image, request.rect.x, request.rect.y, request.rect.w, request.rect.h, 0, 0, canvas.width, canvas.height);
+                let link = document.createElement('a');
+                link.download = "download.png";
+                link.href = canvas.toDataURL();
+                link.click();
+              };
+              image.src = request.result;
+            }
           default:
             break;
         }
@@ -61,6 +78,10 @@ export default {
         from: this.fromCode,
         to: this.toCode
       });
+    },
+    showCropper() {
+      let cropper = Cropper.getInstace();
+      cropper.show();
     }
   },
   watch: {
@@ -97,6 +118,7 @@ export default {
           <button class="btn" vOn:click={() => this.openSelectLanguageDialog('to')}>{this.toLang}</button>
         </div>
         <button class="btn" vOn:click={ this.sendTranslateRequest }>翻译</button>
+        <button class="btn" style="margin-left: 10px;" vOn:click={ this.showCropper } >截图翻译</button>
       </div>
       <div class="translate-result">
         {this.result}

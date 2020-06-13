@@ -12,6 +12,21 @@ async function messageHandler(params) {
         result = await Translate(params.text, {from: 'auto', to: 'en'});
         result = { action: params.action, result: result.from.language.iso };
         break;
+      case 'captureScreen':
+        result = await new Promise((resolve, reject) => {
+          chrome.tabs.captureVisibleTab(null, {
+            format : "png",
+            quality : 100
+          }, (data) => {
+            resolve(data);
+          });
+        });
+        result = { 
+          action: params.action,
+          result: result,
+          rect: {x: params.x, y: params.y, w: params.width, h: params.height} 
+        };
+        break;
       default:
         break;
     }
