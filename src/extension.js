@@ -86,8 +86,19 @@ class TranslationExtension {
   }
 
   showWidget(pos) {
+    const widgetContentWidth = 300;
+    const widgetContentHeight = 200;
+    const margin = 20; 
     this.widget.style.display = 'block';
     this.widget.style.position = 'absolute';
+    let scrollWidth = (document.documentElement || document.body.parentNode || document.body).scrollWidth;
+    let scrollHeight = (document.documentElement || document.body.parentNode || document.body).scrollHeight;
+    if ((pos.left + widgetContentWidth) > scrollWidth) {
+      pos.left = scrollWidth - widgetContentWidth - margin;
+    }
+    if ((pos.top + widgetContentHeight) > scrollHeight) {
+      pos.top = scrollHeight - widgetContentHeight - margin;
+    }
     this.widget.style.top = `${pos.top}px`;
     this.widget.style.left = `${pos.left}px`;
   }

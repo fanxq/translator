@@ -89,11 +89,12 @@ dialog {
   padding: 0px 5px;
   background-color: white;
   color: #000;
-  max-width: 300px;
+  width: 300px;
   max-height: 200px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
   .titlebar {
     display: flex;
     align-items: center;
