@@ -18,6 +18,58 @@ $defaultColor: #4b8bf4;
   padding: 5px;
 }
 
+
+.content {
+  font-size: 14px !important;
+  margin: 10px 10px;
+  position:relative;
+  padding: 0px 5px;
+  background-color: white;
+  color: #000;
+  max-width: 300px;
+  max-height: 200px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  .titlebar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    .logo {
+      height:20px;
+      width:20px;
+      margin-right:10px;
+    }
+    h3 {
+      margin: 0;
+    }
+  }
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .btn-group {
+      display: flex;
+      margin-right: 10px;
+      align-items: center;
+      img {
+        width: 20px;
+        height: 12px;
+        display:inline-block;
+        margin:0px 10px;
+      }
+    }
+  }
+  .translate-result {
+    margin: 10px 0px;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    padding: 5px;
+    overflow-x: hidden;
+    flex: 1;
+  }
+}
+
 dialog {
   width: 500px;
   height: 600px;
@@ -30,11 +82,12 @@ dialog {
     padding: 0;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     margin: 10px 0;
-    .titlebar{
+    .title{
       display: flex; 
       align-items: center;
+      margin-bottom: 0px;
       .logo {
         height:20px;
         width:20px;
@@ -52,6 +105,10 @@ dialog {
       appearance: none;
       outline: none;
       color: #dd5145;
+      img {
+        width: 16px;
+        height: 16px;
+      }
     }
   }
   .body {
@@ -79,55 +136,5 @@ dialog {
         }
       }
     }
-  }
-}
-
-.content {
-  font-size: 14px !important;
-  margin: 10px 10px;
-  position:relative;
-  padding: 0px 5px;
-  background-color: white;
-  color: #000;
-  width: 300px;
-  max-height: 200px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  .titlebar {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    .logo {
-      height:20px;
-      width:20px;
-      margin-right:10px;
-    }
-    h3 {
-      margin: 0;
-    }
-  }
-  .toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .btn-group {
-      display: flex;
-      margin-right: 10px;
-      .text-block {
-        font-size: 20px;
-        display:inline-block;
-        margin:0px 10px;
-      }
-    }
-  }
-  .translate-result {
-    margin: 10px 0px;
-    border-radius: 5px;
-    background-color: #f4f4f4;
-    padding: 5px;
-    overflow-x: hidden;
-    flex: 1;
   }
 }

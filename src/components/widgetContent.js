@@ -121,7 +121,7 @@ export default {
       <div class="toolbar">
         <div class="btn-group">
           <button class="btn" vOn:click={() => this.openSelectLanguageDialog('from')}>{this.fromLang}</button>
-          <span class="text-block">&#8407;</span>
+          <img src={chrome.extension.getURL('arrow.png')}/>
           <button class="btn" vOn:click={() => this.openSelectLanguageDialog('to')}>{this.toLang}</button>
         </div>
         <button class="btn" vOn:click={ this.sendTranslateRequest }>翻译</button>
