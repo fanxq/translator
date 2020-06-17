@@ -163,6 +163,7 @@ class TranslationExtension {
   }
   watchMouseupOnDocument() {
     document.addEventListener('mouseup', (e) => {
+      
       if (!this.isSelected) {
         return;
       }

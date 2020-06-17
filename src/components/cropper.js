@@ -30,6 +30,7 @@ export default class Cropper {
 
   onMouseDown(ev) {
     console.log('mousedown');
+    ev.stopPropagation();
     this.pressed = true;
     this.startX = ev.offsetX;
     this.startY = ev.offsetY;

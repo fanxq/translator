@@ -1,9 +1,11 @@
 import languageMap from '../config/languages';
 import dialogComponent from './languageSettingDialog';
 import Cropper from './cropper';
+import imageTranslateDialog from './imageTranslateDialog';
 export default {
   components: {
-    'set-lang-dialog': dialogComponent
+    'set-lang-dialog': dialogComponent,
+    'image-translate-dialog': imageTranslateDialog
   },
   props: {
     selectedText: {
@@ -17,12 +19,14 @@ export default {
       defaultCode: 'en',
       disable: true,
       showDialog: false,
+      showImgTxDialog: false,
       direction: 'from',
       fromCode: 'auto',
       fromLang: 'Automatic',
       toCode: 'en',
       toLang: '英文',
-      result: ''
+      result: '',
+      imgSrc: chrome.extension.getURL('icon128.png')
     }
   },
   mounted() {
@@ -45,10 +49,13 @@ export default {
                 canvas.height = request.rect.h;
                 let ctx = canvas.getContext('2d');
                 ctx.drawImage(image, request.rect.x, request.rect.y, request.rect.w, request.rect.h, 0, 0, canvas.width, canvas.height);
-                let link = document.createElement('a');
-                link.download = "download.png";
-                link.href = canvas.toDataURL();
-                link.click();
+                this.imgSrc = canvas.toDataURL();
+                this.$nextTick(() => {
+                  let cropper = Cropper.getInstace();
+                  cropper.hide();
+                  this.showImgTxDialog = true;
+                  canvas = null;
+                });
               };
               image.src = request.result;
             }
@@ -124,6 +131,7 @@ export default {
         {this.result}
       </div>
       <set-lang-dialog show={this.showDialog} {...{on:{'update:show':(val) => this.showDialog = val}}} vModel={this.defaultCode}></set-lang-dialog>
+      <image-translate-dialog show={this.showImgTxDialog} {...{on:{'update:show':(val) => this.showImgTxDialog = val}}} imgSrc={this.imgSrc}></image-translate-dialog>
     </div>
   }
 }
