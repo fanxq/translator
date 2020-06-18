@@ -39,6 +39,7 @@
     "google-translate-api": "git+https://github.com/fanxq/google-translate-api.git#5b2a761884078ede40d0bd96086f6f2350618b8d",
     "node-sass": "^4.14.1",
     "sass-loader": "^7.3.1",
+    "tesseract.js": "^2.1.1",
     "vue": "^2.6.11"
   }
 }

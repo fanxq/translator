@@ -1,4 +1,17 @@
 const Translate = require('google-translate-api');
+const { createWorker } = require('tesseract.js');
+
+let worker;
+async function initTesseract() {
+  worker = createWorker({
+    workerPath: chrome.runtime.getURL("lib/worker.min.js"),
+    langPath: chrome.runtime.getURL("traineddata"),
+    corePath: chrome.runtime.getURL("lib/tesseract-core.wasm.js")
+  });
+  await worker.load();
+  await worker.loadLanguage("eng");
+  await worker.initialize("eng");
+}
 
 async function messageHandler(params) {
   let result;
@@ -26,6 +39,18 @@ async function messageHandler(params) {
           result: result,
           rect: {x: params.x, y: params.y, w: params.width, h: params.height} 
         };
+        break;
+      case 'recognize':
+        if (!worker) {
+          await initTesseract();
+        }
+        const { data: { text } } = await worker.recognize(params.screenshot);
+        console.log(text);
+        result = {
+          action: params.action,
+          result: text
+        }
+        // await worker.terminate();
         break;
       default:
         break;

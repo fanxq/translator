@@ -26,7 +26,8 @@ export default {
       toCode: 'en',
       toLang: '英文',
       result: '',
-      imgSrc: chrome.extension.getURL('icon128.png')
+      imgSrc: chrome.extension.getURL('icon128.png'),
+      recognizeText: ''
     }
   },
   mounted() {
@@ -59,6 +60,10 @@ export default {
               };
               image.src = request.result;
             }
+            break;
+          case 'recognize':
+            this.recognizeText = request.result || '识别出错！';
+            break;
           default:
             break;
         }
@@ -131,7 +136,7 @@ export default {
         {this.result}
       </div>
       <set-lang-dialog show={this.showDialog} {...{on:{'update:show':(val) => this.showDialog = val}}} vModel={this.defaultCode}></set-lang-dialog>
-      <image-translate-dialog show={this.showImgTxDialog} {...{on:{'update:show':(val) => this.showImgTxDialog = val}}} imgSrc={this.imgSrc}></image-translate-dialog>
+      <image-translate-dialog show={this.showImgTxDialog} {...{on:{'update:show':(val) => this.showImgTxDialog = val}}} imgSrc={this.imgSrc} recognizeText={this.recognizeText}></image-translate-dialog>
     </div>
   }
 }
