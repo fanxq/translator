@@ -64,6 +64,7 @@ async function messageHandler(params) {
 chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
   if (request) {
     let result = await messageHandler(request);
+    result.messageId = request.messageId;
     chrome.tabs.query({active: true}, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, result);
     });

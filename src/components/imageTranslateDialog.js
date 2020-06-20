@@ -1,16 +1,28 @@
+import Cropper from './cropper';
 export default {
   props: {
-    imgSrc: {
-      type: String,
-      require: true
-    },
+    // imgSrc: {
+    //   type: String,
+    //   require: true
+    // },
     show: {
       type: Boolean,
       default: false
     },
-    recognizeText: {
-      type: String,
-      default: ''
+    // recognizeText: {
+    //   type: String,
+    //   default: ''
+    // },
+    showCropper: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      imgSrc: chrome.extension.getURL('icon128.png'),
+      result: '',
+      recognizeText: ''
     }
   },
   watch: {
@@ -32,11 +44,17 @@ export default {
     close() {
       this.$emit('update:show', false);
     },
-    translate() {
+    recognize() {
       chrome.runtime.sendMessage({
         action: 'recognize',
         screenshot: this.imgSrc
       });
+    },
+    translate() {
+
+    },
+    showCropper() {
+      
     }
   },
   render() {
@@ -55,11 +73,16 @@ export default {
             <div class="item">
               <img src={this.imgSrc}/>
             </div>
-            <button title="翻译" vOn:click={this.translate}>
+            <button title="识别" vOn:click={this.recognize}>
               <img src={chrome.extension.getURL('arrow.png')}/>
             </button>
             <div class="item result">
-              {this.recognizeText}
+              <textarea value={this.recognizeText}>
+              </textarea>
+              <span class="btn-group">
+                  <button class="btn" vOn:click={this.translate}>翻译</button>
+                  <button class="btn">纠错</button>
+                </span>
             </div>
           </div>
         </section>

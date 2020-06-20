@@ -2,6 +2,8 @@ import languageMap from '../config/languages';
 import dialogComponent from './languageSettingDialog';
 import Cropper from './cropper';
 import imageTranslateDialog from './imageTranslateDialog';
+import MessageHub from '../messageHub';
+
 export default {
   components: {
     'set-lang-dialog': dialogComponent,
@@ -34,13 +36,13 @@ export default {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request) {
         switch (request.action) {
-          case 'translate':
-            this.result = request.result;
-            break;
-          case 'getSrcLang':
-            this.fromCode = request.result.toLowerCase();
-            this.fromLang = this.langs[this.fromCode];
-            break;
+          // case 'translate':
+          //   this.result = request.result;
+          //   break;
+          // case 'getSrcLang':
+          //   this.fromCode = request.result.toLowerCase();
+          //   this.fromLang = this.langs[this.fromCode];
+          //   break;
           case 'captureScreen':
             {
               let image = new Image();
@@ -84,11 +86,13 @@ export default {
       }
     },
     sendTranslateRequest() {
-      chrome.runtime.sendMessage({
+      MessageHub.getInstance().send({
         action: 'translate',
         text: this.selectedText,
         from: this.fromCode,
         to: this.toCode
+      }).then(result => {
+        this.result = result;
       });
     },
     showCropper() {
@@ -110,9 +114,12 @@ export default {
     selectedText(val) {
       if (val) {
         this.result = `原文：${val}`;
-        chrome.runtime.sendMessage({
+        MessageHub.getInstance().send({
           action: 'getSrcLang',
           text: val
+        }).then(result => {
+          this.fromCode = result.toLowerCase();
+          this.fromLang = this.langs[this.fromCode];
         });
       }
     }
