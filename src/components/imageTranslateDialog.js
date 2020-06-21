@@ -1,19 +1,12 @@
 import Cropper from './cropper';
+import MessageHub from '../messageHub';
 export default {
   props: {
-    // imgSrc: {
-    //   type: String,
-    //   require: true
-    // },
     show: {
       type: Boolean,
       default: false
     },
-    // recognizeText: {
-    //   type: String,
-    //   default: ''
-    // },
-    showCropper: {
+    isCropperVisible: {
       type: Boolean,
       default: false
     }
@@ -22,6 +15,7 @@ export default {
     return {
       imgSrc: chrome.extension.getURL('icon128.png'),
       result: '',
+      translateResult: '',
       recognizeText: ''
     }
   },
@@ -32,7 +26,29 @@ export default {
       } else {
         this.closeDialog();
       }
+    },
+    isCropperVisible(val) {
+      if (val) {
+        Cropper.getInstace().show();
+      } else {
+        Cropper.getInstace().hide();
+      }
+    },
+    recognizeText(val) {
+      this.result = val;
+    },
+    translateResult(val) {
+      this.result = val;
     }
+  },
+  mounted() {
+    MessageHub.getInstance().eventBus.$on('setScreenshot', (data) => {
+      if (data) {
+        this.imgSrc = data;
+        this.$emit('update:show', true);
+        this.$emit('update:isCropperVisible', false);
+      }
+    });
   },
   methods: {
     showDialog() {
@@ -42,25 +58,35 @@ export default {
       this.$refs.dlg.close();
     },
     close() {
+      this.$emit('update:isCropperVisible', false);
       this.$emit('update:show', false);
     },
     recognize() {
-      chrome.runtime.sendMessage({
+      MessageHub.getInstance().send({
         action: 'recognize',
         screenshot: this.imgSrc
+      }).then(response => {
+        this.recognizeText = response;
       });
     },
     translate() {
-
+      if (!this.recognizeText) {
+        alert('请先识别图片!');
+      }
+      MessageHub.getInstance().send({
+        action: 'translate',
+        text: this.recognizeText,
+        from: 'auto',
+        to: 'en'
+      }).then(result => {
+        this.translateResult = result;
+      });
     },
-    showCropper() {
-      
-    }
   },
   render() {
-    return (<dialog ref="dlg" style="width:800px; height:300px;">
+    return (<dialog ref="dlg" style="width:800px; height:350px; padding-bottom: 40px;">
         <header>
-          <span class="titlebar">
+          <span class="title">
             <img src={chrome.extension.getURL('icon128.png')} class="logo"/>
             <h3>截图翻译</h3>
           </span>
@@ -68,7 +94,7 @@ export default {
             <img src={chrome.extension.getURL('close.png')}/>
           </button>
         </header>
-        <section class="body">
+        <section class="body" style="overflow: initial;">
           <div class="body-content">
             <div class="item">
               <img src={this.imgSrc}/>
@@ -77,7 +103,7 @@ export default {
               <img src={chrome.extension.getURL('arrow.png')}/>
             </button>
             <div class="item result">
-              <textarea value={this.recognizeText}>
+              <textarea value={this.result}>
               </textarea>
               <span class="btn-group">
                   <button class="btn" vOn:click={this.translate}>翻译</button>

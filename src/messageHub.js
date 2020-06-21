@@ -26,7 +26,8 @@ export default class MessageHub {
     if (!payload) {
       throw new Error('payload cannot be empty!');
     }
-    let id = `msg-${Date.now}`
+    let timestamp = +new Date;
+    let id = `msg-${timestamp}`;
     this.messeageIds.push(id);
     payload.messageId = id;
     return new Promise((resolve, reject) => {

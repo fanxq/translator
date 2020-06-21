@@ -1,13 +1,12 @@
-const canvasId = 'TX-CANVAS-4-CROPPER';
+import MessageHub from '../messageHub';
 let _instance;
 export default class Cropper {
   constructor() {
     this.startX = 0;
     this.startY = 0;
     this.canvas = document.createElement('canvas');
-    this.canvas.width = document.documentElement.clientWidth;
+    this.canvas.width = window.screen.width;
     this.canvas.height = document.documentElement.clientHeight;
-    this.canvas.setAttribute('id', canvasId);
     this.canvas.style.position = 'fixed';
     this.canvas.style.left = '0px';
     this.canvas.style.top = '0px';
@@ -48,12 +47,33 @@ export default class Cropper {
   onMouseUp(ev) {
     console.log('mouseup');
     if (this.pressed) {
-      chrome.runtime.sendMessage({
+      // chrome.runtime.sendMessage({
+      //   action: 'captureScreen',
+      //   width: Math.abs(ev.offsetX - this.startX),
+      //   height: Math.abs(ev.offsetY - this.startY),
+      //   x: Math.min(ev.offsetX, this.startX),
+      //   y: Math.min(ev.offsetY, this.startY)
+      // });
+      let width = Math.abs(ev.offsetX - this.startX);
+      let height = Math.abs(ev.offsetY - this.startY);
+      let x = Math.min(ev.offsetX, this.startX);
+      let y = Math.min(ev.offsetY, this.startY);
+      MessageHub.getInstance().send({
         action: 'captureScreen',
-        width: Math.abs(ev.offsetX - this.startX),
-        height: Math.abs(ev.offsetY - this.startY),
-        x: Math.min(ev.offsetX, this.startX),
-        y: Math.min(ev.offsetY, this.startY)
+      }).then(data => {
+        let image = new Image();
+        image.onload = () => {
+          console.log('width:', image.width, 'height:', image.height);
+          let canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          let scale = image.naturalWidth / this.canvas.width;
+          let ctx = canvas.getContext('2d');
+          ctx.drawImage(image, x * scale, y * scale, width * scale, height * scale, 0, 0, canvas.width, canvas.height);
+          MessageHub.getInstance().eventBus.$emit('setScreenshot', canvas.toDataURL());
+          canvas = null;
+        };
+        image.src = data;
       });
     }
     this.pressed = false;

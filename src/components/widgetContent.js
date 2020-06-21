@@ -28,8 +28,7 @@ export default {
       toCode: 'en',
       toLang: '英文',
       result: '',
-      imgSrc: chrome.extension.getURL('icon128.png'),
-      recognizeText: ''
+      isCropperVisible: false
     }
   },
   mounted() {
@@ -43,29 +42,29 @@ export default {
           //   this.fromCode = request.result.toLowerCase();
           //   this.fromLang = this.langs[this.fromCode];
           //   break;
-          case 'captureScreen':
-            {
-              let image = new Image();
-              image.onload = () => {
-                let canvas = document.createElement('canvas');
-                canvas.width = request.rect.w;
-                canvas.height = request.rect.h;
-                let ctx = canvas.getContext('2d');
-                ctx.drawImage(image, request.rect.x, request.rect.y, request.rect.w, request.rect.h, 0, 0, canvas.width, canvas.height);
-                this.imgSrc = canvas.toDataURL();
-                this.$nextTick(() => {
-                  let cropper = Cropper.getInstace();
-                  cropper.hide();
-                  this.showImgTxDialog = true;
-                  canvas = null;
-                });
-              };
-              image.src = request.result;
-            }
-            break;
-          case 'recognize':
-            this.recognizeText = request.result || '识别出错！';
-            break;
+          // case 'captureScreen':
+          //   {
+          //     let image = new Image();
+          //     image.onload = () => {
+          //       let canvas = document.createElement('canvas');
+          //       canvas.width = request.rect.w;
+          //       canvas.height = request.rect.h;
+          //       let ctx = canvas.getContext('2d');
+          //       ctx.drawImage(image, request.rect.x, request.rect.y, request.rect.w, request.rect.h, 0, 0, canvas.width, canvas.height);
+          //       this.imgSrc = canvas.toDataURL();
+          //       this.$nextTick(() => {
+          //         let cropper = Cropper.getInstace();
+          //         cropper.hide();
+          //         this.showImgTxDialog = true;
+          //         canvas = null;
+          //       });
+          //     };
+          //     image.src = request.result;
+          //   }
+          //   break;
+          // case 'recognize':
+          //   this.recognizeText = request.result || '识别出错！';
+          //   break;
           default:
             break;
         }
@@ -96,8 +95,7 @@ export default {
       });
     },
     showCropper() {
-      let cropper = Cropper.getInstace();
-      cropper.show();
+      this.isCropperVisible = true;
     }
   },
   watch: {
@@ -143,7 +141,10 @@ export default {
         {this.result}
       </div>
       <set-lang-dialog show={this.showDialog} {...{on:{'update:show':(val) => this.showDialog = val}}} vModel={this.defaultCode}></set-lang-dialog>
-      <image-translate-dialog show={this.showImgTxDialog} {...{on:{'update:show':(val) => this.showImgTxDialog = val}}} imgSrc={this.imgSrc} recognizeText={this.recognizeText}></image-translate-dialog>
+      <image-translate-dialog 
+        show={this.showImgTxDialog} {...{on:{'update:show':(val) => this.showImgTxDialog = val}}} 
+        isCropperVisible={this.isCropperVisible} {...{on:{'update:isCropperVisible': (val) => this.isCropperVisible = val}}}
+      ></image-translate-dialog>
     </div>
   }
 }

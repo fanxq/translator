@@ -26,6 +26,7 @@ async function messageHandler(params) {
         result = { action: params.action, result: result.from.language.iso };
         break;
       case 'captureScreen':
+        console.log('bg:', JSON.stringify(params));
         result = await new Promise((resolve, reject) => {
           chrome.tabs.captureVisibleTab(null, {
             format : "png",
@@ -36,8 +37,7 @@ async function messageHandler(params) {
         });
         result = { 
           action: params.action,
-          result: result,
-          rect: {x: params.x, y: params.y, w: params.width, h: params.height} 
+          result: result
         };
         break;
       case 'recognize':
@@ -63,8 +63,9 @@ async function messageHandler(params) {
 
 chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
   if (request) {
+    let messageId = request.messageId;
     let result = await messageHandler(request);
-    result.messageId = request.messageId;
+    messageId && (result.messageId = messageId);
     chrome.tabs.query({active: true}, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, result);
     });
