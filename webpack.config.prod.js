@@ -66,6 +66,12 @@ module.exports = {
       }, {
         from: path.resolve(__dirname, './src/page/popup.html'),
         to: path.resolve(__dirname, './out/popup.html')
+      }, {
+        from: path.resolve(__dirname, './src/traineddata'),
+        to: path.resolve(__dirname,'./out/traineddata')
+      }, {
+        from: path.resolve(__dirname, './src/lib'),
+        to: path.resolve(__dirname, './out/lib')
       }
     ])
   ]

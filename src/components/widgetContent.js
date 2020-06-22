@@ -31,46 +31,6 @@ export default {
       isCropperVisible: false
     }
   },
-  mounted() {
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request) {
-        switch (request.action) {
-          // case 'translate':
-          //   this.result = request.result;
-          //   break;
-          // case 'getSrcLang':
-          //   this.fromCode = request.result.toLowerCase();
-          //   this.fromLang = this.langs[this.fromCode];
-          //   break;
-          // case 'captureScreen':
-          //   {
-          //     let image = new Image();
-          //     image.onload = () => {
-          //       let canvas = document.createElement('canvas');
-          //       canvas.width = request.rect.w;
-          //       canvas.height = request.rect.h;
-          //       let ctx = canvas.getContext('2d');
-          //       ctx.drawImage(image, request.rect.x, request.rect.y, request.rect.w, request.rect.h, 0, 0, canvas.width, canvas.height);
-          //       this.imgSrc = canvas.toDataURL();
-          //       this.$nextTick(() => {
-          //         let cropper = Cropper.getInstace();
-          //         cropper.hide();
-          //         this.showImgTxDialog = true;
-          //         canvas = null;
-          //       });
-          //     };
-          //     image.src = request.result;
-          //   }
-          //   break;
-          // case 'recognize':
-          //   this.recognizeText = request.result || '识别出错！';
-          //   break;
-          default:
-            break;
-        }
-      }
-    });
-  },
   methods: {
     noop() {
       console.log('stop click event');

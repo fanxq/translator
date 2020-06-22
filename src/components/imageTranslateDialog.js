@@ -16,7 +16,8 @@ export default {
       imgSrc: chrome.extension.getURL('icon128.png'),
       result: '',
       translateResult: '',
-      recognizeText: ''
+      recognizeText: '',
+      translateBtnDisable: true
     }
   },
   watch: {
@@ -39,6 +40,13 @@ export default {
     },
     translateResult(val) {
       this.result = val;
+    },
+    result(val) {
+      if(val) {
+        this.translateBtnDisable = false;
+      } else {
+        this.translateBtnDisable = true;
+      }
     }
   },
   mounted() {
@@ -56,6 +64,14 @@ export default {
     },
     closeDialog() {
       this.$refs.dlg.close();
+      this.resetData();
+    },
+    resetData() {
+      this.recognizeText = '';
+      this.translateResult = '';
+      this.result = '';
+      this.imgSrc = chrome.extension.getURL('icon128.png');
+      this.translateBtnDisable = true;
     },
     close() {
       this.$emit('update:isCropperVisible', false);
@@ -70,14 +86,14 @@ export default {
       });
     },
     translate() {
-      if (!this.recognizeText) {
+      if (!this.result) {
         alert('请先识别图片!');
       }
       MessageHub.getInstance().send({
         action: 'translate',
-        text: this.recognizeText,
+        text: this.result,
         from: 'auto',
-        to: 'en'
+        to: 'zh-cn'
       }).then(result => {
         this.translateResult = result;
       });
@@ -103,12 +119,11 @@ export default {
               <img src={chrome.extension.getURL('arrow.png')}/>
             </button>
             <div class="item result">
-              <textarea value={this.result}>
+              <textarea vModel={this.result}>
               </textarea>
               <span class="btn-group">
-                  <button class="btn" vOn:click={this.translate}>翻译</button>
-                  <button class="btn">纠错</button>
-                </span>
+                <button class="btn" vOn:click={this.translate} disabled={this.translateBtnDisable}>翻译</button>
+              </span>
             </div>
           </div>
         </section>

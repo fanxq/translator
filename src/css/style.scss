@@ -154,7 +154,7 @@ dialog {
             background-color: #f4f4f4;
             border: none;
             box-sizing: border-box;
-            padding: 30px 5px 5px;
+            padding: 35px 5px 5px;
           }
         }
         img {
@@ -191,5 +191,12 @@ dialog {
   &:hover {
     background-color: $defaultColor;
     color: #fff;
+  }
+  &:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
+    &:hover{
+      color: #888;
+    }
   }
 }
