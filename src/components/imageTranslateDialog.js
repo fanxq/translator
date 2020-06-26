@@ -1,5 +1,5 @@
 import Cropper from './cropper';
-import MessageHub from '../messageHub';
+import MessageHub from '../content_scripts/messageHub';
 export default {
   props: {
     show: {
@@ -13,7 +13,7 @@ export default {
   },
   data() {
     return {
-      imgSrc: chrome.extension.getURL('icon128.png'),
+      imgSrc: chrome.extension.getURL('images/icon128.png'),
       result: '',
       translateResult: '',
       recognizeText: '',
@@ -70,7 +70,7 @@ export default {
       this.recognizeText = '';
       this.translateResult = '';
       this.result = '';
-      this.imgSrc = chrome.extension.getURL('icon128.png');
+      this.imgSrc = chrome.extension.getURL('images/icon128.png');
       this.translateBtnDisable = true;
     },
     close() {
@@ -103,11 +103,11 @@ export default {
     return (<dialog ref="dlg" style="width:800px; height:350px; padding-bottom: 40px;">
         <header>
           <span class="title">
-            <img src={chrome.extension.getURL('icon128.png')} class="logo"/>
+            <img src={chrome.extension.getURL('images/icon128.png')} class="logo"/>
             <h3>截图翻译</h3>
           </span>
           <button class="btn-close" vOn:click={this.close} title="关闭">
-            <img src={chrome.extension.getURL('close.png')}/>
+            <img src={chrome.extension.getURL('images/close.png')}/>
           </button>
         </header>
         <section class="body" style="overflow: initial;">
@@ -116,7 +116,7 @@ export default {
               <img src={this.imgSrc}/>
             </div>
             <button title="识别" vOn:click={this.recognize}>
-              <img src={chrome.extension.getURL('arrow.png')}/>
+              <img src={chrome.extension.getURL('images/arrow.png')}/>
             </button>
             <div class="item result">
               <textarea vModel={this.result}>

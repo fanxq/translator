@@ -6,9 +6,9 @@
 	    "tabs", "<all_urls>", "activeTab", "storage"
 		],
 		"icons": {
-			"16": "icon16.png",
-			"48": "icon48.png",
-			"128": "icon128.png"
+			"16": "images/icon16.png",
+			"48": "images/icon48.png",
+			"128": "images/icon128.png"
 		},
 		"background": {
 			"scripts":["background.js"],
@@ -26,17 +26,15 @@
 		],
 	  "browser_action": {
 			"default_title": "划词翻译",
-			"default_icon":"icon48.png",
-			"default_popup": "popup.html"
+			"default_icon":"images/icon48.png",
+			"default_popup": "browser_action_popup/popup.html"
 		},
 		"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 		"manifest_version": 2,
 		"web_accessible_resources": [
-			"icon128.png",
-			"arrow.png",
-			"close.png",
+			"images/*.png",
 			"traineddata/*.traineddata.gz",
 			"lib/tesseract-core.wasm.js",
-			"worker.min.js"
+			"lib/worker.min.js"
 		]
 }

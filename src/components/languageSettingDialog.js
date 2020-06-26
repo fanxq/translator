@@ -1,4 +1,4 @@
-import languageMap from '../config/languages';
+import languageMap from '../assets/config/languages';
 let langList = Object.keys(languageMap).map(x => {
   return {
     code: x,
@@ -51,11 +51,11 @@ export default {
     <dialog ref="dlg">
       <header>
         <span class="title">
-          <img src={chrome.extension.getURL('icon128.png')} class="logo"/>
+          <img src={chrome.extension.getURL('images/icon128.png')} class="logo"/>
           <h3>选择语言</h3>
         </span>
         <button class="btn-close" vOn:click={this.close} title="关闭">
-          <img src={chrome.extension.getURL('close.png')}/>
+          <img src={chrome.extension.getURL('images/close.png')}/>
         </button>
       </header>
       <section class="body">

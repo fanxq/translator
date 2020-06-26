@@ -1,6 +1,6 @@
-import extensionStyle from './css/style.scss';
+import extensionStyle from '../assets/scss/style.scss';
 import Vue from 'vue';
-import widgetContent from './components/widgetContent';
+import widgetContent from '../components/widgetContent';
 
 class Point {
   constructor(x, y) {

@@ -1,4 +1,4 @@
-import MessageHub from '../messageHub';
+import MessageHub from '../content_scripts/messageHub';
 let _instance;
 export default class Cropper {
   constructor() {

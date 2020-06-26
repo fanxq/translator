@@ -5,8 +5,8 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   mode: 'production',
   entry: {
-    main: './src/main.js',
-    background: './src/background.js'
+    main: './src/content_scripts/main.js',
+    background: './src/background/background.js'
   },
   output: {
     path: path.resolve(__dirname, 'out'),
@@ -57,21 +57,12 @@ module.exports = {
         from: path.resolve(__dirname, './src/manifest.json'),
         to: path.resolve(__dirname, './out/manifest.json')
       }, {
-        from: path.resolve(__dirname, './src/images'),
+        from: path.resolve(__dirname, './src/assets'),
         to: path.resolve(__dirname, './out'),
-        ignore: ['*.gif']
+        ignore: ['images/*.gif', 'config/**/*', 'scss/**/*']
       }, {
-        from: path.resolve(__dirname, './src/popup.js'),
-        to: path.resolve(__dirname, './out/popup.js')
-      }, {
-        from: path.resolve(__dirname, './src/page/popup.html'),
-        to: path.resolve(__dirname, './out/popup.html')
-      }, {
-        from: path.resolve(__dirname, './src/traineddata'),
-        to: path.resolve(__dirname,'./out/traineddata')
-      }, {
-        from: path.resolve(__dirname, './src/lib'),
-        to: path.resolve(__dirname, './out/lib')
+        from: path.resolve(__dirname, './src/browser_action_popup'),
+        to: path.resolve(__dirname, './out/browser_action_popup')
       }
     ])
   ]
