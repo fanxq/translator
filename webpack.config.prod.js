@@ -60,9 +60,6 @@ module.exports = {
         from: path.resolve(__dirname, './src/assets'),
         to: path.resolve(__dirname, './out'),
         ignore: ['images/*.gif', 'config/**/*', 'scss/**/*']
-      }, {
-        from: path.resolve(__dirname, './src/browser_action_popup'),
-        to: path.resolve(__dirname, './out/browser_action_popup')
       }
     ])
   ]

@@ -9,8 +9,8 @@ async function initTesseract() {
     corePath: chrome.runtime.getURL("lib/tesseract-core.wasm.js")
   });
   await worker.load();
-  await worker.loadLanguage("eng");
-  await worker.initialize("eng");
+  await worker.loadLanguage("chi_sim+chi_sim_vert");
+  await worker.initialize("chi_sim");
 }
 
 async function messageHandler(params) {
@@ -49,7 +49,7 @@ async function messageHandler(params) {
         result = {
           action: params.action,
           result: text
-        }
+        };
         // await worker.terminate();
         break;
       default:

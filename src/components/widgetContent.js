@@ -28,7 +28,8 @@ export default {
       toCode: 'en',
       toLang: '英文',
       result: '',
-      isCropperVisible: false
+      isCropperVisible: false,
+      enableScreenshot: false,
     }
   },
   methods: {
@@ -56,6 +57,12 @@ export default {
     },
     showCropper() {
       this.isCropperVisible = true;
+    },
+    setEnableOfScreenshotBtn() {
+      chrome.storage.local.get('enableScreenshot', (reslut) => {
+        console.log('是否启用截图翻译：', reslut.enableScreenshot);
+        this.enableScreenshot = reslut.enableScreenshot || false;
+      });
     }
   },
   watch: {
@@ -80,7 +87,13 @@ export default {
           this.fromLang = this.langs[this.fromCode];
         });
       }
-    }
+    },
+  },
+  mounted() {
+    this.setEnableOfScreenshotBtn();
+    MessageHub.getInstance().eventBus.$on('refresh-widget-content', () => {
+      this.setEnableOfScreenshotBtn();
+    });
   },
   render() {
     return <div class="content" vOn:mousedown_stop={this.noop}>
@@ -95,7 +108,11 @@ export default {
           <button class="btn" vOn:click={() => this.openSelectLanguageDialog('to')}>{this.toLang}</button>
         </div>
         <button class="btn" vOn:click={ this.sendTranslateRequest }>翻译</button>
-        <button class="btn" style="margin-left: 10px;" vOn:click={ this.showCropper } >截图翻译</button>
+        <button class="btn" 
+          style={{marginLeft: '10px', display: this.enableScreenshot ? 'inline-block' : 'none'}}
+          vOn:click={ this.showCropper } >
+            截图翻译
+        </button>
       </div>
       <div class="translate-result">
         {this.result}

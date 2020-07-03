@@ -1,6 +1,7 @@
 import extensionStyle from '../assets/scss/style.scss';
 import Vue from 'vue';
 import widgetContent from '../components/widgetContent';
+import MessageHub from './messageHub';
 
 class Point {
   constructor(x, y) {
@@ -101,6 +102,8 @@ class TranslationExtension {
     }
     this.widget.style.top = `${pos.top}px`;
     this.widget.style.left = `${pos.left}px`;
+    // widget显示时，发送消息通知widgetContent,widgetContent监听该消息并在消息触发时进行相应的修改
+    MessageHub.getInstance().eventBus.$emit('refresh-widget-content'); 
   }
 
   hideWidget() {
