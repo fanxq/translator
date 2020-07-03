@@ -27,8 +27,13 @@ export default class Cropper {
     return _instance;
   }
 
+  setCursorStyle(val) {
+    this.canvas.style.cursor = val; 
+  }
+
   onMouseDown(ev) {
     console.log('mousedown');
+    this.setCursorStyle('crosshair');
     ev.stopPropagation();
     this.pressed = true;
     this.startX = ev.offsetX;
@@ -38,6 +43,7 @@ export default class Cropper {
   onMouseMove(ev) {
     console.log('mousemove');
     if (this.pressed) {
+      this.setCursorStyle('crosshair');
       let clipWidth = ev.offsetX - this.startX;
       let clipHeight = ev.offsetY - this.startY;
       this.draw(clipWidth, clipHeight);
@@ -46,6 +52,7 @@ export default class Cropper {
 
   onMouseUp(ev) {
     console.log('mouseup');
+    this.setCursorStyle('auto');
     if (this.pressed) {
       // chrome.runtime.sendMessage({
       //   action: 'captureScreen',
@@ -58,6 +65,12 @@ export default class Cropper {
       let height = Math.abs(ev.offsetY - this.startY);
       let x = Math.min(ev.offsetX, this.startX);
       let y = Math.min(ev.offsetY, this.startY);
+      if (width <= 20 || height <= 20) {
+        alert('所截图片尺寸过小，请重新截取！');
+        this.resetCanvas();
+        this.pressed = false;
+        return;
+      }
       MessageHub.getInstance().send({
         action: 'captureScreen',
       }).then(data => {
@@ -79,11 +92,16 @@ export default class Cropper {
     this.pressed = false;
   }
 
+  // 重置画布
+  resetCanvas() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.fillStyle = "rgba(128,128,128,0.5)";
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
   draw(rectW, rectH) {
     if (this.ctx) {
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.ctx.fillStyle = "rgba(128,128,128,0.5)";
-      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+      this.resetCanvas();
       var originalStartX = this.startX;
       var originalStartY = this.startY;
       if (rectW < 0) {
