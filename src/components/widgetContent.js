@@ -107,12 +107,14 @@ export default {
           <img src={chrome.extension.getURL('images/arrow.png')}/>
           <button class="btn" vOn:click={() => this.openSelectLanguageDialog('to')}>{this.toLang}</button>
         </div>
-        <button class="btn" vOn:click={ this.sendTranslateRequest }>翻译</button>
-        <button class="btn" 
-          style={{marginLeft: '10px', display: this.enableScreenshot ? 'inline-block' : 'none'}}
-          vOn:click={ this.showCropper } >
-            截图翻译
-        </button>
+        <div class="btn-group">
+          <button class="btn" vOn:click={ this.sendTranslateRequest }>翻译</button>
+          <button class="btn" 
+            style={{marginLeft: '10px', display: this.enableScreenshot ? 'inline-block' : 'none'}}
+            vOn:click={ this.showCropper } >
+              截图翻译
+          </button>
+        </div>
       </div>
       <div class="translate-result">
         {this.result}

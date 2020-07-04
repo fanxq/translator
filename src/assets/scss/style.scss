@@ -40,8 +40,10 @@ $defaultColor: #4b8bf4;
     justify-content: space-between;
     .btn-group {
       display: flex;
-      margin-right: 10px;
       align-items: center;
+      &:first-child {
+        margin-right: 10px;
+      }
       img {
         width: 20px;
         height: 12px;
