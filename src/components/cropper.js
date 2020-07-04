@@ -54,13 +54,6 @@ export default class Cropper {
     console.log('mouseup');
     this.setCursorStyle('auto');
     if (this.pressed) {
-      // chrome.runtime.sendMessage({
-      //   action: 'captureScreen',
-      //   width: Math.abs(ev.offsetX - this.startX),
-      //   height: Math.abs(ev.offsetY - this.startY),
-      //   x: Math.min(ev.offsetX, this.startX),
-      //   y: Math.min(ev.offsetY, this.startY)
-      // });
       let width = Math.abs(ev.offsetX - this.startX);
       let height = Math.abs(ev.offsetY - this.startY);
       let x = Math.min(ev.offsetX, this.startX);
@@ -135,9 +128,4 @@ export default class Cropper {
     this.canvas.style.display = 'none';
   }
 
-  // destory() {
-  //   this.canvas.removeEventListener('mousedown', this.onMouseDown, false);
-  //   this.canvas.removeEventListener('mousemove', this.onMouseMove, false);
-  //   this.canvas.removeEventListener('mouseup', this.onMouseUp, false);
-  // }
 }
