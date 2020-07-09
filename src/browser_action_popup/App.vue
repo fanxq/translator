@@ -26,6 +26,9 @@ export default {
   watch: {
     enable(val) {
       chrome.storage.local.set({'enable': val});
+      if (!val) {
+        this.enableScreenshot = false;
+      }
     },
     enableScreenshot(val) {
       chrome.storage.local.set({'enableScreenshot': val});

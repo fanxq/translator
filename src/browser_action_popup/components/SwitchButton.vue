@@ -60,6 +60,12 @@ $themeColor: #41b883;
     background-color: #b7b7b7;
     transition: left 0.3s ease;
   }
+  &:disabled {
+    border-color: rgba($color: #ccc, $alpha: 0.4);
+    &::before {
+      background-color: rgba($color: #b7b7b7, $alpha: 0.4);
+    }
+  }
   &.active {
     border-color: $themeColor;
     &::before {
