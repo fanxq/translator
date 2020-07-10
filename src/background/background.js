@@ -1,17 +1,28 @@
 const Translate = require('google-translate-api');
 const { createWorker } = require('tesseract.js');
 
+const LANG_MAP = {
+  'chi_sim': 'chi_sim+chi_sim_vert',
+  'eng': 'eng',
+  'jpn': 'jpn+jpn_vert'
+};
+
 let worker;
-async function initTesseract() {
+async function initTesseract(lang) {
+  if (worker) {
+    await worker.terminate();
+  }
   worker = createWorker({
     workerPath: chrome.runtime.getURL("lib/worker.min.js"),
     langPath: chrome.runtime.getURL("traineddata"),
     corePath: chrome.runtime.getURL("lib/tesseract-core.wasm.js")
   });
   await worker.load();
-  await worker.loadLanguage("chi_sim+chi_sim_vert");
-  await worker.initialize("chi_sim");
+  await worker.loadLanguage(LANG_MAP[lang]);
+  await worker.initialize(lang);
 }
+
+window.reloadTesseract = initTesseract;
 
 async function messageHandler(params) {
   let result;
@@ -42,7 +53,12 @@ async function messageHandler(params) {
         break;
       case 'recognize':
         if (!worker) {
-          await initTesseract();
+          let lang = await new Promise((resolve, reject) => {
+            chrome.storage.local.get('recognizeTo', (result) => {
+              resolve(result.recognizeTo || 'eng');
+            });
+          });
+          await initTesseract(lang);
         }
         const { data: { text } } = await worker.recognize(params.screenshot);
         console.log(text);

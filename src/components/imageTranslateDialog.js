@@ -89,13 +89,21 @@ export default {
       if (!this.result) {
         alert('请先识别图片!');
       }
-      MessageHub.getInstance().send({
-        action: 'translate',
-        text: this.result,
-        from: 'auto',
-        to: 'zh-cn'
-      }).then(result => {
-        this.translateResult = result;
+      new Promise((resolve, reject) => {
+        chrome.storage.local.get('translateTo', (result) => {
+          resolve(result.translateTo || 'zh-cn');
+        });
+      }).then((translateTo) => {
+        MessageHub.getInstance().send({
+          action: 'translate',
+          text: this.result,
+          from: 'auto',
+          to: translateTo
+        }).then(result => {
+          this.translateResult = result;
+        });
+      }).catch(err => {
+        alert('请重试！');
       });
     },
   },
