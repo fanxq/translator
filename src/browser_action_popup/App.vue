@@ -5,7 +5,7 @@
       <switch-button v-model="enable"/>
     </div>
     <div class="option-item">
-      <span>启用截图翻译</span>
+      <span>启用截图翻译<span class="tag">(实验功能)</span></span>
       <switch-button v-model="enableScreenshot" :disabled="!enable"/>
     </div>
     <div v-show="enableScreenshot" class="option-item">
@@ -65,6 +65,11 @@ export default {
     },
     enableScreenshot(val) {
       chrome.storage.local.set({'enableScreenshot': val});
+      if (!val) {
+        this.$nextTick(()=>{
+         window.location.reload();
+        });
+      }
     }
   },
   mounted() {
@@ -107,6 +112,10 @@ export default {
     font-size: 16px;
     font-family: sans-serif;
     padding: 8px;
+    .tag {
+      font-size: 12px;
+      color:#4b8bf4;
+    }
     &:first-child {
       border-bottom: 1px solid #ccc;
     }
