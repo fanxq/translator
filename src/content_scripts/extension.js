@@ -2,6 +2,7 @@ import extensionStyle from '../assets/scss/style.scss';
 import Vue from 'vue';
 import widgetContent from '../components/widgetContent';
 import MessageHub from './messageHub';
+import imageTranslateDialog from '../components/imageTranslateDialog/index';
 
 class Point {
   constructor(x, y) {
@@ -66,13 +67,29 @@ class TranslationExtension {
   }
 
   initWidgetContent() {
+    let self = this;
+    Vue.use(imageTranslateDialog);
     return new Vue({
       components: {
         'widget-content': widgetContent
       },
       data() {
         return {
-          selectedText: ''
+          selectedText: '',
+        }
+      },
+      computed: {
+        show() {
+          return MessageHub.getInstance().store.visible;
+        }
+      },
+      watch: {
+        show(val) {
+          if (!val) {
+            self.showWidget({left: 0, top: 0});
+          } else {
+            self.hideWidget();
+          }
         }
       },
       methods: {
@@ -81,7 +98,9 @@ class TranslationExtension {
         }
       },
       render() {
-        return <widget-content selectedText={this.selectedText}></widget-content>
+        if (this.show) {
+          return (<widget-content selectedText={this.selectedText}></widget-content>);
+        }
       }
     });
   }

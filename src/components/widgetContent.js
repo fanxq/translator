@@ -1,13 +1,10 @@
 import languageMap from '../assets/config/languages';
 import dialogComponent from './languageSettingDialog';
-import Cropper from './cropper';
-import imageTranslateDialog from './imageTranslateDialog';
 import MessageHub from '../content_scripts/messageHub';
 
 export default {
   components: {
     'set-lang-dialog': dialogComponent,
-    'image-translate-dialog': imageTranslateDialog
   },
   props: {
     selectedText: {
@@ -28,7 +25,6 @@ export default {
       toCode: 'en',
       toLang: '英文',
       result: '',
-      isCropperVisible: false,
       enableScreenshot: false,
     }
   },
@@ -56,13 +52,16 @@ export default {
       });
     },
     showCropper() {
-      this.isCropperVisible = true;
+      this.$imgTranslateDialog();
     },
     setEnableOfScreenshotBtn() {
       chrome.storage.local.get('enableScreenshot', (reslut) => {
         console.log('是否启用截图翻译：', reslut.enableScreenshot);
         this.enableScreenshot = reslut.enableScreenshot || false;
       });
+    },
+    setContentInvisible() {
+      MessageHub.getInstance().setVisible(false);
     }
   },
   watch: {
@@ -94,6 +93,10 @@ export default {
     MessageHub.getInstance().eventBus.$on('refresh-widget-content', () => {
       this.setEnableOfScreenshotBtn();
     });
+    MessageHub.getInstance().eventBus.$on('show-cropper', () => {
+      this.showCropper();
+      this.setContentInvisible();
+    });
   },
   render() {
     return <div class="content" vOn:mousedown_stop={this.noop}>
@@ -120,10 +123,6 @@ export default {
         {this.result}
       </div>
       <set-lang-dialog show={this.showDialog} {...{on:{'update:show':(val) => this.showDialog = val}}} vModel={this.defaultCode}></set-lang-dialog>
-      <image-translate-dialog 
-        show={this.showImgTxDialog} {...{on:{'update:show':(val) => this.showImgTxDialog = val}}} 
-        isCropperVisible={this.isCropperVisible} {...{on:{'update:isCropperVisible': (val) => this.isCropperVisible = val}}}
-      ></image-translate-dialog>
     </div>
   }
 }

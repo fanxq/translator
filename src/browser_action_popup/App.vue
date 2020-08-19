@@ -34,6 +34,9 @@
         </li>
       </ul>
     </div>
+    <div class="option-item" style="margin-top: 10px;">
+      <button class="btn center" @click="showImageTranslateDialog">开始截图翻译</button>
+    </div>
   </div>
 </template>
 
@@ -98,6 +101,11 @@ export default {
     setTranslateLang(code) {
       this.translateTo = code;
       chrome.storage.local.set({'translateTo': code});
+    },
+    showImageTranslateDialog() {
+      chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, {from: 'popup', cmd: 'showCropper'});
+      });
     }
   }
 }
@@ -109,7 +117,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     width: 280px;
-    font-size: 16px;
+    font-size: 14px;
     font-family: sans-serif;
     padding: 8px;
     .tag {
@@ -135,6 +143,22 @@ export default {
           color: #fff;
         }
       }
+    }
+    .btn {
+      border: none;
+      outline: none;
+      appearance: none;
+      background-color: #4b8bf4;
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 2px;
+      font-size: 14px;
+      &:hover {
+        background-color: #315a9c;
+      }
+    }
+    .center {
+      margin: 0 auto;
     }
   }
 </style>

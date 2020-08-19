@@ -3,6 +3,9 @@ let _instance;
 export default class MessageHub {
   constructor() {
     this.eventBus = new Vue();
+    this.store = Vue.observable({
+      visible: true
+    });
     this.messeageIds = [];
     this.init();
   }
@@ -17,6 +20,10 @@ export default class MessageHub {
   init() {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request) {
+        if (request.from === 'popup' && request.cmd === 'showCropper') {
+          this.eventBus.$emit('show-cropper');
+          return;
+        }
         this.eventBus.$emit(request.messageId, request.result);
       }
     });
@@ -51,4 +58,7 @@ export default class MessageHub {
     });
   }
  
+  setVisible(val) {
+    this.store.visible = val;
+  }
 }
