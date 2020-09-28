@@ -1,5 +1,9 @@
 import TranslationExtension from './extension.js';
-
+let isInit = false;
 document.addEventListener("DOMContentLoaded", () => {
-  new TranslationExtension();
+  if (!isInit) {
+    console.log('init extension');
+    new TranslationExtension();
+    isInit = true;
+  }
 });
