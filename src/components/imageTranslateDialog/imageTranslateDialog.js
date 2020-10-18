@@ -105,8 +105,9 @@ export default {
             <div class="item">
               <img src={this.imgSrc}/>
             </div>
-            <button title="识别" vOn:click={this.recognize}>
+            <button vOn:click={this.recognize}>
               <img src={chrome.extension.getURL('images/arrow.png')}/>
+              <span>识别</span>
             </button>
             <div class="item result">
               <textarea vModel={this.result}>
