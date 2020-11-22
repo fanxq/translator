@@ -89,14 +89,14 @@ export default {
   },
   render() {
     return (<dialog ref="dlg" 
-      vOn:mousedown_stop={()=>{console.log('stop click event')}}
+      on={{mousedown: (e)=>{ e.stopPropagation();}}}
       style="width:800px; height:350px; padding-bottom: 40px;">
         <header>
           <span class="title">
             <img src={chrome.extension.getURL('images/icon128.png')} class="logo"/>
             <h3>截图翻译</h3>
           </span>
-          <button class="btn-close" vOn:click={this.close} title="关闭">
+          <button class="btn-close" on={{click: this.close}} title="关闭">
             <img src={chrome.extension.getURL('images/close.png')}/>
           </button>
         </header>
@@ -105,7 +105,7 @@ export default {
             <div class="item">
               <img src={this.imgSrc}/>
             </div>
-            <button vOn:click={this.recognize}>
+            <button on={{click: this.recognize}}>
               <img src={chrome.extension.getURL('images/arrow.png')}/>
               <span>识别</span>
             </button>
@@ -113,7 +113,7 @@ export default {
               <textarea vModel={this.result}>
               </textarea>
               <span class="btn-group">
-                <button class="btn" vOn:click={this.translate} disabled={this.translateBtnDisable}>翻译</button>
+                <button class="btn" on={{click: this.translate}} disabled={this.translateBtnDisable}>翻译</button>
               </span>
             </div>
           </div>

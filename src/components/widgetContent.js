@@ -29,7 +29,8 @@ export default {
     }
   },
   methods: {
-    noop() {
+    noop(ev) {
+      ev.stopPropagation();
       console.log('stop click event');
     },
     openSelectLanguageDialog(direction) {
@@ -99,22 +100,22 @@ export default {
     });
   },
   render() {
-    return <div class="content" vOn:mousedown_stop={this.noop}>
+    return <div class="content" on={{mousedown: (ev) => {this.noop(ev);}}}>
       <div class="titlebar">
         <img src={chrome.extension.getURL('images/icon128.png')} class="logo" />
         <h3>划词翻译</h3>
       </div>
       <div class="toolbar">
         <div class="btn-group">
-          <button class="btn" vOn:click={() => this.openSelectLanguageDialog('from')}>{this.fromLang}</button>
+          <button class="btn" on={{click: () => this.openSelectLanguageDialog('from')}}>{this.fromLang}</button>
           <img src={chrome.extension.getURL('images/arrow.png')}/>
-          <button class="btn" vOn:click={() => this.openSelectLanguageDialog('to')}>{this.toLang}</button>
+          <button class="btn" on={{click: () => this.openSelectLanguageDialog('to')}}>{this.toLang}</button>
         </div>
         <div class="btn-group">
-          <button class="btn" vOn:click={ this.sendTranslateRequest }>翻译</button>
+          <button class="btn" on={{click: this.sendTranslateRequest}}>翻译</button>
           <button class="btn" 
             style={{marginLeft: '10px', display: this.enableScreenshot ? 'inline-block' : 'none'}}
-            vOn:click={ this.showCropper } >
+            on={{click: this.showCropper}} >
               截图翻译
           </button>
         </div>

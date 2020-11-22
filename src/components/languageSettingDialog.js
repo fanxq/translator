@@ -54,14 +54,14 @@ export default {
           <img src={chrome.extension.getURL('images/icon128.png')} class="logo"/>
           <h3>选择语言</h3>
         </span>
-        <button class="btn-close" vOn:click={this.close} title="关闭">
+        <button class="btn-close" on={{click: this.close}} title="关闭">
           <img src={chrome.extension.getURL('images/close.png')}/>
         </button>
       </header>
       <section class="body">
         <ul>
           {
-            this.langs.map(x => <li vOn:click={() => this.onItemSeleted(x.code)} class={x.code === this.value ? 'active' : ''}>{x.name}</li>)
+            this.langs.map(x => <li on={{click: () => this.onItemSeleted(x.code)}} class={x.code === this.value ? 'active' : ''}>{x.name}</li>)
           }
         </ul>
       </section>
