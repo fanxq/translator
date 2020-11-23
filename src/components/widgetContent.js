@@ -29,10 +29,6 @@ export default {
     }
   },
   methods: {
-    noop(ev) {
-      ev.stopPropagation();
-      console.log('stop click event');
-    },
     openSelectLanguageDialog(direction) {
       this.showDialog = true;
       this.direction = direction;
@@ -55,7 +51,7 @@ export default {
     showCropper() {
       this.$imgTranslateDialog();
     },
-    setEnableOfScreenshotBtn() {
+    resetScreenshotBtn() {
       chrome.storage.local.get('enableScreenshot', (reslut) => {
         console.log('是否启用截图翻译：', reslut.enableScreenshot);
         this.enableScreenshot = reslut.enableScreenshot || false;
@@ -90,9 +86,9 @@ export default {
     },
   },
   mounted() {
-    this.setEnableOfScreenshotBtn();
+    this.resetScreenshotBtn();
     MessageHub.getInstance().eventBus.$on('refresh-widget-content', () => {
-      this.setEnableOfScreenshotBtn();
+      this.resetScreenshotBtn();
     });
     MessageHub.getInstance().eventBus.$on('show-cropper', () => {
       this.showCropper();
@@ -100,7 +96,7 @@ export default {
     });
   },
   render() {
-    return <div class="content" on={{mousedown: (ev) => {this.noop(ev);}}}>
+    return <div class="content" on={{mousedown: (e)=>{ e.stopPropagation();}}}>
       <div class="titlebar">
         <img src={chrome.extension.getURL('images/icon128.png')} class="logo" />
         <h3>划词翻译</h3>

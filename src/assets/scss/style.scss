@@ -68,7 +68,8 @@ $defaultColor: #4b8bf4;
 
 dialog {
   width: 500px;
-  height: 600px;
+  height: 80%;
+  max-height: 600px;
   padding: 10px 20px;
   box-sizing: border-box;
   border: none;
