@@ -1,4 +1,4 @@
-import extensionStyle from '../assets/scss/style.scss';
+import extensionStyle from '../assets/scss/global.scss';
 import Vue from 'vue';
 import widgetContent from '../components/widgetContent';
 import MessageHub from './messageHub';

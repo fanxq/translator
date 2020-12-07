@@ -1,4 +1,3 @@
-import Cropper from './cropper';
 import MessageHub from '../../content_scripts/messageHub';
 export default {
   data() {
@@ -30,7 +29,6 @@ export default {
       if (data) {
         this.imgSrc = data;
         this.showDialog();
-        Cropper.getInstace().hide();
       }
     });
   },
@@ -42,9 +40,6 @@ export default {
       this.$refs.dlg.close();
       this.resetData();
     },
-    showCropper() {
-      Cropper.getInstace().show();
-    },
     resetData() {
       this.recognizeText = '';
       this.translateResult = '';
@@ -54,7 +49,6 @@ export default {
     },
     close() {
       MessageHub.getInstance().setVisible(true);
-      Cropper.getInstace().hide();
       this.closeDialog();
     },
     recognize() {
@@ -89,8 +83,9 @@ export default {
   },
   render() {
     return (<dialog ref="dlg" 
-      on={{mousedown: (e)=>{ e.stopPropagation();}}}
-      style="width:800px; height:350px; padding-bottom: 40px;">
+      class="img-translate-dialog"
+      on={{mousedown: (e)=>{ e.stopPropagation();}}}>
+      <section class="dialog--content">
         <header>
           <span class="title">
             <img src={chrome.extension.getURL('images/icon128.png')} class="logo"/>
@@ -100,7 +95,12 @@ export default {
             <img src={chrome.extension.getURL('images/close.png')}/>
           </button>
         </header>
-        <section class="body" style="overflow: initial;">
+        <section class="toolbar">
+          <div class="section-settings">
+
+          </div>
+        </section>
+        <section class="body">
           <div class="body-content">
             <div class="item">
               <img src={this.imgSrc}/>
@@ -118,6 +118,7 @@ export default {
             </div>
           </div>
         </section>
-      </dialog>)
+      </section>
+    </dialog>)
   }
 }

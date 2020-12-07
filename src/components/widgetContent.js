@@ -49,7 +49,7 @@ export default {
       });
     },
     showCropper() {
-      this.$imgTranslateDialog();
+      this.$showCropper();
     },
     resetScreenshotBtn() {
       chrome.storage.local.get('enableScreenshot', (reslut) => {

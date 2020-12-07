@@ -1,0 +1,63 @@
+$defaultColor: #4b8bf4;
+@mixin dialog--base {
+  width: 500px;
+  height: 80%;
+  max-height: 600px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 10px 0px;
+  border-radius: 10px;
+  header {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    .title{
+      display: flex; 
+      align-items: center;
+      margin-bottom: 0px;
+      .logo {
+        height:20px;
+        width:20px;
+        margin-right:10px;
+      }
+      h3 {
+        margin: 0;
+      }
+    }
+    
+    .btn-close {
+      border: none;
+      font-weight: bold;
+      background-color: transparent;
+      appearance: none;
+      outline: none;
+      color: #dd5145;
+      img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+}
+
+.btn {
+  outline: none;
+  border-radius: 4px;
+  border: 2px solid $defaultColor;
+  background-color: transparent;
+  padding: 5px;
+  &:hover {
+    background-color: $defaultColor;
+    color: #fff;
+  }
+  &:disabled {
+    background-color: #ccc;
+    border-color: #ccc;
+    &:hover{
+      color: #888;
+    }
+  }
+}

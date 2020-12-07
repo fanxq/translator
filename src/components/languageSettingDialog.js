@@ -48,7 +48,7 @@ export default {
   },
   render() {
     return (
-    <dialog ref="dlg">
+    <dialog ref="dlg" class="lang-settings-dialog">
       <header>
         <span class="title">
           <img src={chrome.extension.getURL('images/icon128.png')} class="logo"/>
