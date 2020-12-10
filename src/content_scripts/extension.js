@@ -4,6 +4,8 @@ import widgetContent from '../components/widgetContent';
 import MessageHub from './messageHub';
 import imageTranslateDialog from '../components/imageTranslateDialog/index';
 
+let _extensionHostElement = null;
+
 class Point {
   constructor(x, y) {
     this.x = x;
@@ -41,6 +43,10 @@ class TranslationExtension {
     this.init();
   }
 
+  static getExtensionHostElement() {
+    return _extensionHostElement;
+  }
+
   init() {
     this.initWidget();
     this.watchMousedownOnDocument();
@@ -63,6 +69,7 @@ class TranslationExtension {
     this.widgetContent = this.initWidgetContent();
     shadowRoot.appendChild(this.widgetContent.$mount().$el);
     document.body.appendChild(this.widget);
+    _extensionHostElement = this.widget;
     extensionStyle.use(); // 延迟加载css
   }
 

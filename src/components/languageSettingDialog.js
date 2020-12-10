@@ -54,7 +54,7 @@ export default {
           <img src={chrome.extension.getURL('images/icon128.png')} class="logo"/>
           <h3>选择语言</h3>
         </span>
-        <button class="btn-close" on={{click: this.close}} title="关闭">
+        <button class="icon-btn" on={{click: this.close}} data-title="关闭">
           <img src={chrome.extension.getURL('images/close.png')}/>
         </button>
       </header>

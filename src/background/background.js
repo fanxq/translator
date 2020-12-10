@@ -22,7 +22,7 @@ async function initTesseract(lang) {
   await worker.initialize(lang);
 }
 
-window.reloadTesseract = initTesseract;
+const reloadTesseract = initTesseract;
 
 async function messageHandler(params) {
   let result;
@@ -67,6 +67,10 @@ async function messageHandler(params) {
           result: text
         };
         // await worker.terminate();
+        break;
+      case 'reloadTesseract':
+        await reloadTesseract(params.lang);
+        result = {action: params.action, result: 'ok'};
         break;
       default:
         break;

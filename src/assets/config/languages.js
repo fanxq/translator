@@ -1,5 +1,5 @@
 export default {
-  "auto": "Automatic",
+  "auto": "自动匹配",
   "af": "南非荷兰文",
   "sq": "阿尔巴尼亚文",
   "am": "阿姆哈拉文",

@@ -40,7 +40,7 @@ export default {
     },
     mouseupHandler(ev) {
       console.log('mouseup');
-      this.setCursorStyle('auto');
+      this.setCursorStyle(`url("${chrome.runtime.getURL('images/cut.png')}"), auto`);
       if (this.pressed) {
         let width = Math.abs(ev.offsetX - this.startX);
         let height = Math.abs(ev.offsetY - this.startY);
@@ -64,7 +64,7 @@ export default {
             canvas.height = height;
             let scale = image.naturalWidth / this.canvasWidth;
             let ctx = canvas.getContext('2d');
-            ctx.drawImage(image, x * scale - this.lineWidth, y * scale - this.lineWidth, width * scale - (2 * this.lineWidth), height * scale - (2 * this.lineWidth), 
+            ctx.drawImage(image, x * scale, y * scale, width * scale, height * scale, 
               0, 0, canvas.width, canvas.height);
             MessageHub.getInstance().eventBus.$emit('setScreenshot', canvas.toDataURL('image/png', 1));
             canvas = null;
@@ -85,6 +85,7 @@ export default {
         this.draw(clipWidth, clipHeight);
       } else {
         //console.log(this.$refs.tips.getBoundingClientRect());
+        this.setCursorStyle(`url("${chrome.runtime.getURL('images/cut.png')}") 12 10, auto`);
         if (!this.tipsHeight && !this.tipsWidth) {
           let rect = this.$refs.tips.getBoundingClientRect();
           this.tipsWidth = rect.width;
@@ -120,7 +121,7 @@ export default {
             rectH = Math.abs(rectH);
         }
         this.ctx.clearRect(this.startX, this.startY, rectW, rectH);
-        this.ctx.strokeStyle = "red";
+        this.ctx.strokeStyle = "white";
         this.ctx.lineWidth = this.lineWidth;
         this.ctx.strokeRect(this.startX, this.startY, rectW, rectH);
         this.ctx.font = "12px Microsoft YaHei";
