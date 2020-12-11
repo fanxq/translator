@@ -160,7 +160,7 @@ export default {
               <img src={this.imgSrc}/>
             </div>
             <button on={{click: this.recognize}} disabled={this.recognizeBtnDisable}>
-              <img src={chrome.extension.getURL('images/arrow.png')}/>
+              <span>&#10140;</span>
               <span>识别</span>
             </button>
             <div class={['item', 'result',this.loading ? 'loading' : '']} tips={this.tips}>

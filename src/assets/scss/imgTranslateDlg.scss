@@ -87,10 +87,10 @@
           &:active{
             background-color: #ccc;
           }
-          img {
-            width: 30px;
-            height: 20px;
-            margin-bottom: 5px;
+          span{
+            &:first-of-type {
+              font-size: 30px;
+            }
           }
         }
       }

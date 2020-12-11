@@ -25,6 +25,7 @@
   color: #000;
   max-width: 380px;
   max-height: 200px;
+  min-width: 300px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -66,5 +67,7 @@
     padding: 5px;
     overflow-x: hidden;
     flex: 1;
+    white-space: pre-wrap;
+    text-align: justify;
   }
 }

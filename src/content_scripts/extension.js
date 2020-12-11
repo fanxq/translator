@@ -113,7 +113,7 @@ class TranslationExtension {
   }
 
   showWidget(pos) {
-    const widgetContentWidth = 300;
+    const widgetContentWidth = 320;
     const widgetContentHeight = 200;
     const margin = 20; 
     this.widget.style.display = 'block';

@@ -36,6 +36,7 @@ $defaultColor: #4b8bf4;
   border-radius: 4px;
   border: 2px solid $defaultColor;
   background-color: transparent;
+  white-space: nowrap;
   padding: 5px;
   &:hover {
     background-color: $defaultColor;

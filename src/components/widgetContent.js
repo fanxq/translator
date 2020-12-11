@@ -21,7 +21,7 @@ export default {
       showImgTxDialog: false,
       direction: 'from',
       fromCode: 'auto',
-      fromLang: 'Automatic',
+      fromLang: '自动匹配',
       toCode: 'en',
       toLang: '英文',
       result: '',
@@ -79,7 +79,7 @@ export default {
           action: 'getSrcLang',
           text: val
         }).then(result => {
-          this.fromCode = result.toLowerCase();
+          this.fromCode = (result && result.toLowerCase()) || 'auto';
           this.fromLang = this.langs[this.fromCode];
         });
       }
