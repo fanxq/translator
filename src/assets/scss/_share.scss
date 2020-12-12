@@ -51,6 +51,30 @@ $defaultColor: #4b8bf4;
   }
 }
 
+.tooltips {
+  position: relative;
+  &:hover {
+    &::before {
+      display: inline-block;
+    }
+  }
+  &::before {
+    position: absolute;
+    content: attr(tips);
+    color: #fff;
+    background: rgba($color: #333, $alpha: 0.75);
+    left: 50%;
+    transform: translateX(-50%);
+    top: calc(100% + 4px);
+    font-size: 14px;
+    display: none;
+    white-space: nowrap;
+    padding: 5px;
+    z-index: 3;
+    border-radius: 2px;
+  }
+}
+
 .icon-btn {
   position: relative;
   border: none;
@@ -69,7 +93,7 @@ $defaultColor: #4b8bf4;
     content: attr(data-title);
     position: absolute;
     color: #fff;
-    background: rgba($color: #333, $alpha: 0.5);
+    background: rgba($color: #333, $alpha: 0.75);
     left: 50%;
     transform: translateX(-50%);
     top: 100%;
@@ -77,6 +101,8 @@ $defaultColor: #4b8bf4;
     display: none;
     white-space: nowrap;
     padding: 5px;
+    border-radius: 2px;
+    z-index: 3;
   }
   &:hover{
     &::before {

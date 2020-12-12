@@ -26,6 +26,12 @@ export default {
       toLang: '英文',
       result: '',
       enableScreenshot: false,
+      isTranslated: false,
+    }
+  },
+  computed: {
+    linkToResultDetail() {
+      return `https://translate.google.cn/?sl=auto&tl=${this.toCode}&text=${encodeURIComponent(this.selectedText)}&op=translate`;
     }
   },
   methods: {
@@ -39,12 +45,17 @@ export default {
       }
     },
     sendTranslateRequest() {
+      if (this.fromCode === this.toCode) {
+        alert('源语言与目标语言相同，请更换目标语言！');
+        return;
+      }
       MessageHub.getInstance().send({
         action: 'translate',
         text: this.selectedText,
         from: this.fromCode,
         to: this.toCode
       }).then(result => {
+        this.isTranslated = true;
         this.result = result;
       });
     },
@@ -59,7 +70,7 @@ export default {
     },
     setContentInvisible() {
       MessageHub.getInstance().setVisible(false);
-    }
+    },
   },
   watch: {
     defaultCode(val) {
@@ -74,7 +85,8 @@ export default {
     },
     selectedText(val) {
       if (val) {
-        this.result = `原文：${val}`;
+        this.isTranslated = false;
+        this.result = `${val}`;
         MessageHub.getInstance().send({
           action: 'getSrcLang',
           text: val
@@ -103,9 +115,9 @@ export default {
       </div>
       <div class="toolbar">
         <div class="btn-group">
-          <button class="btn" on={{click: () => this.openSelectLanguageDialog('from')}}>{this.fromLang}</button>
-          <img src={chrome.extension.getURL('images/arrow.png')}/>
-          <button class="btn" on={{click: () => this.openSelectLanguageDialog('to')}}>{this.toLang}</button>
+          <button class="btn tooltips" tips="源语言" on={{click: () => this.openSelectLanguageDialog('from')}}>{this.fromLang}</button>
+          <span>&#10140;</span>
+          <button class="btn tooltips" tips="目标语言" on={{click: () => this.openSelectLanguageDialog('to')}}>{this.toLang}</button>
         </div>
         <div class="btn-group">
           <button class="btn" on={{click: this.sendTranslateRequest}}>翻译</button>
@@ -117,6 +129,10 @@ export default {
         </div>
       </div>
       <div class="translate-result">
+        <div class="inner-toolbar">
+          <span class="tag">{this.isTranslated ? '译文' : '原文'}</span>
+          <a href={this.linkToResultDetail} style={{display: this.isTranslated ? 'inline' : 'none'}} target="_blank" rel="noopener nofollow">查看更多释义&#187;</a>
+        </div>
         {this.result}
       </div>
       <set-lang-dialog show={this.showDialog} {...{on:{'update:show':(val) => this.showDialog = val}}} vModel={this.defaultCode}></set-lang-dialog>

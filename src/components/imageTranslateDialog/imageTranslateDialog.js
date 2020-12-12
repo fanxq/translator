@@ -32,6 +32,11 @@ export default {
       translateLangs: JSON.parse(JSON.stringify(langList)),
     }
   },
+  computed: {
+    linkToResultDetail() {
+      return `https://translate.google.cn/?sl=auto&tl=${this.translateTo}&text=${encodeURIComponent(this.recognizeResult)}&op=translate`
+    }
+  },
   watch: {
     displayedResult(val) {
       if(val) {
@@ -150,8 +155,11 @@ export default {
               翻译为<lang-select vModel={this.translateTo} options={this.translateLangs}></lang-select>
             </span>
           </div>
-          <div>
+          <div class="btn-group">
             <button class="btn" onClick={this.translate} disabled={this.translateBtnDisable}>翻译</button>
+            <button class="btn tooltips" style={{display: this.recognizeResult ? 'inline' : 'none'}} tips="使用识别文本查看更多释义">
+              <a href={this.linkToResultDetail}  target="_blank" rel="noopener nofollow">更多释义&#187;</a>
+            </button>
           </div>
         </section>
         <section class="body">
@@ -164,7 +172,7 @@ export default {
               <span>识别</span>
             </button>
             <div class={['item', 'result',this.loading ? 'loading' : '']} tips={this.tips}>
-              <textarea vModel={this.displayedResult}>
+              <textarea vModel={this.displayedResult} readonly>
               </textarea>
             </div>
           </div>

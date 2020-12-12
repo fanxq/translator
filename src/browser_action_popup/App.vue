@@ -8,32 +8,6 @@
       <span>启用截图翻译<span class="tag">(实验功能)</span></span>
       <switch-button v-model="enableScreenshot" :disabled="!enable"/>
     </div>
-    <div v-show="enableScreenshot" class="option-item">
-      <span>识别为：</span>
-      <ul>
-        <li 
-          v-for="item in langs" 
-          :key="item.code" 
-          :class="{active: recognizeTo === item.code}"
-          @click="setRecognizeLang(item.code)"
-        >
-          {{item.name}}
-        </li>
-      </ul>
-    </div>
-    <div v-show="enableScreenshot" class="option-item">
-      <span>翻译为：</span>
-      <ul>
-        <li 
-          v-for="item in langs" 
-          :key="item.code" 
-          :class="{active: translateTo === item.langCode}"
-          @click="setTranslateLang(item.langCode)"
-        >
-          {{item.name}}
-        </li>
-      </ul>
-    </div>
     <div class="option-item" style="margin-top: 10px;">
       <button class="btn center" @click="showImageTranslateDialog">开始截图翻译</button>
     </div>
@@ -50,13 +24,6 @@ export default {
     return {
       enable: false,
       enableScreenshot: false,
-      langs: [
-        {name: '简体中文', code: 'chi_sim', langCode: 'zh-cn'},
-        {name: '英文', code: 'eng', langCode: 'en'},
-        {name: '日文', code: 'jpn', langCode: 'ja'}
-      ],
-      recognizeTo: 'eng',
-      translateTo: 'zh-cn'
     }
   },
   watch: {
@@ -82,26 +49,8 @@ export default {
     chrome.storage.local.get('enableScreenshot', (reslut) => {
       this.enableScreenshot = reslut.enableScreenshot || false;
     });
-    chrome.storage.local.get('recognizeTo', (result) => {
-      this.recognizeTo = result.recognizeTo || 'eng';
-    });
-    chrome.storage.local.get('translateTo', (result) => {
-      this.translateTo = result.translateTo || 'zh-cn';
-    })
   },
   methods: {
-    setRecognizeLang(code) {
-      this.recognizeTo = code;
-      chrome.storage.local.set({'recognizeTo': code});
-      let bg = chrome.extension.getBackgroundPage();
-      if (bg && bg.reloadTesseract) {
-        bg.reloadTesseract(code);
-      }
-    },
-    setTranslateLang(code) {
-      this.translateTo = code;
-      chrome.storage.local.set({'translateTo': code});
-    },
     showImageTranslateDialog() {
       chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {from: 'popup', cmd: 'showCropper'});

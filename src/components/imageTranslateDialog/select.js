@@ -6,7 +6,6 @@ export default {
       showDropdown: false,
       id: `select-${+new Date}`,
       inputId: `input-${+new Date}`,
-      // originalOptions: JSON.parse(JSON.stringify(this.options)),
       optionList: JSON.parse(JSON.stringify(this.options)),
     }
   },
