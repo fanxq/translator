@@ -57,6 +57,8 @@ export default {
       }).then(result => {
         this.isTranslated = true;
         this.result = result;
+      }).catch(err => {
+        alert(`获取翻译失败：${err}`);
       });
     },
     showCropper() {
@@ -93,6 +95,8 @@ export default {
         }).then(result => {
           this.fromCode = (result && result.toLowerCase()) || 'auto';
           this.fromLang = this.langs[this.fromCode];
+        }).catch(err => {
+          alert(`识别源语言失败：${err}`);
         });
       }
     },

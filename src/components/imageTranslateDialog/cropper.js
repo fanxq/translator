@@ -70,6 +70,8 @@ export default {
             canvas = null;
           };
           image.src = data;
+        }).catch(err => {
+          alert(`获取截图失败：${err}`);
         });
       }
       this.pressed = false;

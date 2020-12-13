@@ -8,7 +8,7 @@
       <span>启用截图翻译<span class="tag">(实验功能)</span></span>
       <switch-button v-model="enableScreenshot" :disabled="!enable"/>
     </div>
-    <div class="option-item" style="margin-top: 10px;">
+    <div class="option-item" style="margin-top: 10px;" v-show="enableScreenshot">
       <button class="btn center" @click="showImageTranslateDialog">开始截图翻译</button>
     </div>
   </div>

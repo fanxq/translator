@@ -30,6 +30,7 @@ export default {
       tips: '翻译中...',
       loading: false,
       translateLangs: JSON.parse(JSON.stringify(langList)),
+      isTranslated: false,
     }
   },
   computed: {
@@ -50,11 +51,9 @@ export default {
       MessageHub.getInstance().send({
         action: 'reloadTesseract',
         lang: code
-      }).then(result => {
-        if (result !== 'ok') {
-          let lang = this.recognizeLangs.find(x => x.code === code);
-          alert(`Tesseract加载 ${lang && lang.name} 训练集失败！原因：${result}`);
-        }
+      }).catch(err => {
+        let lang = this.recognizeLangs.find(x => x.code === code);
+        alert(`Tesseract加载 ${lang && lang.name} 训练集失败！原因：${err}`);
       });
     },
   },
@@ -78,6 +77,8 @@ export default {
       this.resetResult();
       this.imgSrc = chrome.extension.getURL('images/icon128.png');
       this.translateBtnDisable = true;
+      this.recognizeBtnDisable = false;
+      this.isTranslated = false;
     },
     resetResult() {
       this.recognizeResult = '';
@@ -93,6 +94,7 @@ export default {
       this.tips = '识别中...';
       this.loading = true;
       this.recognizeBtnDisable = true;
+      this.isTranslated = false;
       MessageHub.getInstance().send({
         action: 'recognize',
         screenshot: this.imgSrc
@@ -123,9 +125,11 @@ export default {
         this.translateResult = result;
         this.displayedResult = result;
         this.loading = false;
+        this.isTranslated = true;
       }).catch(err => {
         alert(`翻译出错了，原因：${err}`);
         this.loading = false;
+        this.isTranslated = true;
       });
     },
   },
@@ -172,7 +176,7 @@ export default {
               <span>识别</span>
             </button>
             <div class={['item', 'result',this.loading ? 'loading' : '']} tips={this.tips}>
-              <textarea vModel={this.displayedResult} readonly>
+              <textarea vModel={this.displayedResult} readonly={this.isTranslated}>
               </textarea>
             </div>
           </div>

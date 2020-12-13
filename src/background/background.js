@@ -76,7 +76,7 @@ async function messageHandler(params) {
         break;
     }
   } catch (error) {
-    result = { action: params.action, result: error.message };
+    result = { action: 'error', result: error.message };
   }
   return result;  
 }

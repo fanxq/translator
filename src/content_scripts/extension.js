@@ -135,6 +135,9 @@ class TranslationExtension {
   hideWidget() {
     if (this.widget) {
       this.widget.style.display = 'none';
+      if (this.widgetContent) {
+        this.widgetContent.setSelectedText('');
+      }
     }
   }
 

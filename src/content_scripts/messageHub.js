@@ -24,7 +24,7 @@ export default class MessageHub {
           this.eventBus.$emit('show-cropper');
           return;
         }
-        this.eventBus.$emit(request.messageId, request.result);
+        this.eventBus.$emit(request.messageId, request);
       }
     });
   }
@@ -53,7 +53,10 @@ export default class MessageHub {
         if (index !== -1) {
           this.messeageIds.splice(index, 1);
         }
-        resolve(response);
+        if (response.action === 'error') {
+          reject(response.result);
+        }
+        resolve(response.result);
       });
     });
   }
