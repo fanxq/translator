@@ -114,6 +114,12 @@ export default {
         alert('请先识别图片!');
         return;
       }
+      if (this.recognizeResult !== this.displayedResult) {
+       let result = confirm('识别文本已修改，是否使用修改后的文本进行翻译？');
+       if (result) {
+         this.recognizeResult = this.displayedResult;
+       }
+      }
       this.tips = '翻译中...';
       this.loading = true;
       MessageHub.getInstance().send({
