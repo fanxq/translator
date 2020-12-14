@@ -86,7 +86,7 @@ export default {
       this.displayedResult = '';
     },
     close() {
-      MessageHub.getInstance().setVisible(true);
+      MessageHub.getInstance().store.showTranslatePanel = true;
       this.closeDialog();
     },
     recognize() {

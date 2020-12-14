@@ -1,6 +1,6 @@
 import extensionStyle from '../assets/scss/global.scss';
 import Vue from 'vue';
-import widgetContent from '../components/widgetContent';
+import translatePanel from '../components/translatePanel';
 import MessageHub from './messageHub';
 import imageTranslateDialog from '../components/imageTranslateDialog/index';
 
@@ -31,7 +31,7 @@ class Point {
   }
 }
 
-class TranslationExtension {
+class TranslatorExtension {
   constructor() {
     this.startPoint = new Point(0, 0);
     this.endPoint = new Point(0, 0);
@@ -39,7 +39,7 @@ class TranslationExtension {
     this.isSelected = false;
     this.isMousedown = false;
     this.widget = null;
-    this.widgetContent = null;
+    this.translatePanel = null;
     this.init();
   }
 
@@ -66,19 +66,19 @@ class TranslationExtension {
       mode: 'open'
     });
     
-    this.widgetContent = this.initWidgetContent();
-    shadowRoot.appendChild(this.widgetContent.$mount().$el);
+    this.translatePanel = this.initTranslatePanel();
+    shadowRoot.appendChild(this.translatePanel.$mount().$el);
     document.body.appendChild(this.widget);
     _extensionHostElement = this.widget;
     extensionStyle.use(); // 延迟加载css
   }
 
-  initWidgetContent() {
+  initTranslatePanel() {
     let self = this;
     Vue.use(imageTranslateDialog);
     return new Vue({
       components: {
-        'widget-content': widgetContent
+        'translate-panel': translatePanel
       },
       data() {
         return {
@@ -86,17 +86,14 @@ class TranslationExtension {
         }
       },
       computed: {
-        show() {
-          return MessageHub.getInstance().store.visible;
-        }
-      },
-      watch: {
-        show(val) {
-          if (!val) {
+        showPanel() {
+          let showPanel = MessageHub.getInstance().store.showTranslatePanel;
+          if (!showPanel) {
             self.showWidget({left: 0, top: 0});
           } else {
             self.hideWidget();
           }
+          return showPanel;
         }
       },
       methods: {
@@ -105,38 +102,38 @@ class TranslationExtension {
         }
       },
       render() {
-        if (this.show) {
-          return (<widget-content selectedText={this.selectedText}></widget-content>);
+        if (this.showPanel) {
+          return (<translate-panel selectedText={this.selectedText}></translate-panel>);
         }
       }
     });
   }
 
   showWidget(pos) {
-    const widgetContentWidth = 320;
-    const widgetContentHeight = 200;
+    const translatePanelWidth = 320;
+    const translatePanelHeight = 200;
     const margin = 20; 
     this.widget.style.display = 'block';
     this.widget.style.position = 'absolute';
     let scrollWidth = (document.documentElement || document.body.parentNode || document.body).scrollWidth;
     let scrollHeight = (document.documentElement || document.body.parentNode || document.body).scrollHeight;
-    if ((pos.left + widgetContentWidth) > scrollWidth) {
-      pos.left = scrollWidth - widgetContentWidth - margin;
+    if ((pos.left + translatePanelWidth) > scrollWidth) {
+      pos.left = scrollWidth - translatePanelWidth - margin;
     }
-    if ((pos.top + widgetContentHeight) > scrollHeight) {
-      pos.top = scrollHeight - widgetContentHeight - margin;
+    if ((pos.top + translatePanelHeight) > scrollHeight) {
+      pos.top = scrollHeight - translatePanelHeight - margin;
     }
     this.widget.style.top = `${pos.top}px`;
     this.widget.style.left = `${pos.left}px`;
-    // widget显示时，发送消息通知widgetContent,widgetContent监听该消息并在消息触发时进行相应的修改
-    MessageHub.getInstance().eventBus.$emit('refresh-widget-content'); 
+    // widget显示时，发送消息通知translatePanel,translatePanel监听该消息并在消息触发时进行相应的修改
+    MessageHub.getInstance().eventBus.$emit('refresh-panel'); 
   }
 
   hideWidget() {
     if (this.widget) {
       this.widget.style.display = 'none';
-      if (this.widgetContent) {
-        this.widgetContent.setSelectedText('');
+      if (this.translatePanel) {
+        this.translatePanel.setSelectedText('');
       }
     }
   }
@@ -215,7 +212,7 @@ class TranslationExtension {
         if (!selectedText) {
           return;
         }
-        this.widgetContent.setSelectedText(selectedText);
+        this.translatePanel.setSelectedText(selectedText);
         let left = this.endPoint.x - (this.endPoint.x -this.startPoint.x) / 2 - 6;
         let top = this.endPoint.y + parseInt(this.getFontsizeOfSelectedText(selection), 10);
         
@@ -235,4 +232,4 @@ class TranslationExtension {
   }
 }
 
-export default TranslationExtension;
+export default TranslatorExtension;

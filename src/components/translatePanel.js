@@ -63,6 +63,7 @@ export default {
     },
     showCropper() {
       this.$showCropper();
+      this.hidePanel();
     },
     resetScreenshotBtn() {
       chrome.storage.local.get('enableScreenshot', (reslut) => {
@@ -70,8 +71,8 @@ export default {
         this.enableScreenshot = reslut.enableScreenshot || false;
       });
     },
-    setContentInvisible() {
-      MessageHub.getInstance().setVisible(false);
+    hidePanel() {
+      MessageHub.getInstance().store.showTranslatePanel = false;
     },
   },
   watch: {
@@ -103,12 +104,11 @@ export default {
   },
   mounted() {
     this.resetScreenshotBtn();
-    MessageHub.getInstance().eventBus.$on('refresh-widget-content', () => {
+    MessageHub.getInstance().eventBus.$on('refresh-panel', () => {
       this.resetScreenshotBtn();
     });
     MessageHub.getInstance().eventBus.$on('show-cropper', () => {
       this.showCropper();
-      this.setContentInvisible();
     });
   },
   render() {

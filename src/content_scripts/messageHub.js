@@ -4,7 +4,7 @@ export default class MessageHub {
   constructor() {
     this.eventBus = new Vue();
     this.store = Vue.observable({
-      visible: true
+      showTranslatePanel: true
     });
     this.messeageIds = [];
     this.init();
@@ -59,9 +59,5 @@ export default class MessageHub {
         resolve(response.result);
       });
     });
-  }
- 
-  setVisible(val) {
-    this.store.visible = val;
   }
 }
