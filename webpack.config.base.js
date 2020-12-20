@@ -8,7 +8,7 @@ module.exports = {
     background: './src/background/background.js'
   },
   output: {
-    path: path.resolve(__dirname, 'out'),
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name].js'
   },
   module: {
@@ -50,10 +50,10 @@ module.exports = {
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, './src/manifest.json'),
-        to: path.resolve(__dirname, './out/manifest.json')
+        to: path.resolve(__dirname, './dist/manifest.json')
       }, {
         from: path.resolve(__dirname, './src/assets'),
-        to: path.resolve(__dirname, './out'),
+        to: path.resolve(__dirname, './dist'),
         ignore: ['images/*.gif', 'config/**/*', 'scss/**/*']
       }
     ])

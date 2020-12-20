@@ -6,7 +6,7 @@ module.exports = {
   // mode: 'development',
   entry: path.resolve(__dirname, './index.js'),
   output: {
-    path: path.resolve(__dirname, '../../out/browser_action_popup'),
+    path: path.resolve(__dirname, '../../dist/browser_action_popup'),
     filename: 'popup.js' 
   },
   module: {

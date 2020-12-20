@@ -9,9 +9,10 @@ module.exports = merge(baseConfig, {
   optimization: {
     minimizer: [
       new TerserPlugin({
+        extractComments: false,
         terserOptions: {
           compress: {
-            drop_console: true
+            drop_console: true,
           }
         }
       })
