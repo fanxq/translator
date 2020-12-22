@@ -31,6 +31,8 @@ export default {
       loading: false,
       translateLangs: JSON.parse(JSON.stringify(langList)),
       isTranslated: false,
+      msg: '',
+      isShowMsg: false
     }
   },
   computed: {
@@ -53,7 +55,7 @@ export default {
         lang: code
       }).catch(err => {
         let lang = this.recognizeLangs.find(x => x.code === code);
-        alert(`Tesseract加载 ${lang && lang.name} 训练集失败！原因：${err}`);
+        this.showMsg(`Tesseract加载 ${lang && lang.name} 训练数据集失败！`)
       });
     },
   },
@@ -89,6 +91,24 @@ export default {
       MessageHub.getInstance().store.showTranslatePanel = true;
       this.closeDialog();
     },
+    showMsg(msg, delay=1500) {
+      if (this.isShowMsg) {
+        this.isShowMsg = false;
+        this.$nextTick(() => {
+          this.isShowMsg = true;
+          this.msg = msg;
+          setTimeout(() => {
+            this.isShowMsg = false;
+          }, delay);
+        });
+        return;
+      }
+      this.isShowMsg = true;
+      this.msg = msg;
+      setTimeout(() => {
+        this.isShowMsg = false;
+      }, delay);
+    },
     recognize() {
       this.resetResult();
       this.tips = '识别中...';
@@ -104,24 +124,19 @@ export default {
         this.loading = false;
         this.recognizeBtnDisable = false;
       }).catch(err => {
-        alert(`图片识别出错，原因：${err}`);
+        this.showMsg('图片识别出错！');
         this.loading = false;
         this.recognizeBtnDisable = false;
       });
     },
     translate() {
-      if (!this.recognizeResult) {
-        alert('请先识别图片!');
-        return;
-      }
       if (this.recognizeResult !== this.displayedResult) {
-       let result = confirm('识别文本已修改，是否使用修改后的文本进行翻译？');
-       if (result) {
-         this.recognizeResult = this.displayedResult;
-       }
+        this.showMsg('识别文本已被修改，将使用修改后的文本进行翻译！', 2500);
+        this.recognizeResult = this.displayedResult;
       }
       this.tips = '翻译中...';
       this.loading = true;
+      this.translateBtnDisable = true;
       MessageHub.getInstance().send({
         action: 'translate',
         text: this.recognizeResult,
@@ -132,17 +147,23 @@ export default {
         this.displayedResult = result;
         this.loading = false;
         this.isTranslated = true;
+        this.translateBtnDisable = false;
       }).catch(err => {
-        alert(`翻译出错了，原因：${err}`);
+        this.showMsg('翻译出错了，请稍后再试！', 2000);
         this.loading = false;
         this.isTranslated = true;
+        this.translateBtnDisable = false;
       });
     },
   },
   render() {
-    return (<dialog ref="dlg" 
-      class="img-translate-dialog"
-      onMousedown={(e)=>{ e.stopPropagation();}}>
+    return (
+      <dialog 
+        ref="dlg" 
+        class={['img-translate-dialog', this.isShowMsg && 'show-msg']}
+        onMousedown={(e)=>{ e.stopPropagation();}}
+        msg={this.msg}
+      >
       <section class="dialog--content">
         <header>
           <span class="title">

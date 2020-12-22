@@ -40,6 +40,7 @@
     }
     h3 {
       margin: 0;
+      font-size: 16px;
     }
   }
   .toolbar {
@@ -55,6 +56,8 @@
       span {
         font-size: 24px;
         margin:0px 10px;
+        color: #888;
+        user-select: none;
       }
     }
   }
@@ -67,19 +70,29 @@
     flex: 1;
     white-space: pre-wrap;
     text-align: justify;
+    position: relative;
+    &.translating {
+      @include overlay;
+      &::before {
+        font-size: 18px;
+        left: 0px;
+      }
+    }
+    &.error {
+      &::before {
+        color: #ff4d4d;
+      }
+    }
     .inner-toolbar {
       position: sticky;
       top: 0px;
-      padding: 8px 0px;
+      padding: 6px 0px 4px;
       background-color: inherit;
       display: flex;
       justify-content: space-between;
       align-items: center;
       .tag {
-        background-color: #a2a2a2;
-        padding: 4px 6px;
-        border-radius: 12px;
-        color: #fcfcfc;
+        color: #9e9c9c;
         user-select: none;
       }
       a {

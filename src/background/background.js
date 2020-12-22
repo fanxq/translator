@@ -20,6 +20,7 @@ async function initTesseract(lang) {
   await worker.load();
   await worker.loadLanguage(LANG_MAP[lang]);
   await worker.initialize(lang);
+  await worker.setParameters({preserve_interword_spaces: '1'});
 }
 
 const reloadTesseract = initTesseract;

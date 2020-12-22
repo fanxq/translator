@@ -25,6 +25,7 @@ $defaultColor: #4b8bf4;
       }
       h3 {
         margin: 0;
+        font-size: 16px;
       }
     }
     
@@ -108,5 +109,21 @@ $defaultColor: #4b8bf4;
     &::before {
       display: inline;
     }
+  }
+}
+
+@mixin overlay {
+  &::before {
+    position: absolute;
+    content: attr(tips);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba($color: #000000, $alpha: 0.5);
+    font-size: 24px;
+    color:#fff;
+    z-index: 3;
   }
 }

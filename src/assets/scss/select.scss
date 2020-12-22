@@ -1,6 +1,7 @@
 .select {
   position: relative;
   color: #4b8bf4;
+  font-size: 14px;
   &::before {
     position: absolute;
     content: '\25BC';

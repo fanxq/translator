@@ -98,7 +98,6 @@ export default {
             }
           </ul>
         </section>
-        
       </span>
     )
   },
