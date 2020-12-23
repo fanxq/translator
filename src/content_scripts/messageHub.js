@@ -4,7 +4,7 @@ export default class MessageHub {
   constructor() {
     this.eventBus = new Vue();
     this.store = Vue.observable({
-      showTranslatePanel: true
+      showCropper: false
     });
     this.messeageIds = [];
     this.init();

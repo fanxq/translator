@@ -1,5 +1,6 @@
 import MessageHub from '../../content_scripts/messageHub';
 import Select from './select';
+import mixin from './mixin';
 import languageMap from '../../assets/config/languages';
 let langList = Object.keys(languageMap).map(x => {
   return {
@@ -12,6 +13,7 @@ export default {
   components: {
     'lang-select': Select
   },
+  mixins: [mixin],
   data() {
     return {
       imgSrc: chrome.extension.getURL('images/icon128.png'),
@@ -31,8 +33,6 @@ export default {
       loading: false,
       translateLangs: JSON.parse(JSON.stringify(langList)),
       isTranslated: false,
-      msg: '',
-      isShowMsg: false
     }
   },
   computed: {
@@ -88,26 +88,8 @@ export default {
       this.displayedResult = '';
     },
     close() {
-      MessageHub.getInstance().store.showTranslatePanel = true;
+      MessageHub.getInstance().store.showCropper = false;
       this.closeDialog();
-    },
-    showMsg(msg, delay=1500) {
-      if (this.isShowMsg) {
-        this.isShowMsg = false;
-        this.$nextTick(() => {
-          this.isShowMsg = true;
-          this.msg = msg;
-          setTimeout(() => {
-            this.isShowMsg = false;
-          }, delay);
-        });
-        return;
-      }
-      this.isShowMsg = true;
-      this.msg = msg;
-      setTimeout(() => {
-        this.isShowMsg = false;
-      }, delay);
     },
     recognize() {
       this.resetResult();

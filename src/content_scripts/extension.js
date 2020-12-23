@@ -62,6 +62,9 @@ class TranslatorExtension {
     this.widget.style.borderRadius = '5px';
     this.widget.style.zIndex = Number.MAX_SAFE_INTEGER;
     this.widget.setAttribute('id', 'TX_SH_0001');
+    this.widget.addEventListener('mousedown', (ev) => {
+      ev.stopPropagation();
+    }, false);
     let shadowRoot = this.widget.attachShadow({
       mode: 'open'
     });
@@ -87,8 +90,9 @@ class TranslatorExtension {
       },
       computed: {
         showPanel() {
-          let showPanel = MessageHub.getInstance().store.showTranslatePanel;
-          if (!showPanel) {
+          let showCropper = MessageHub.getInstance().store.showCropper;
+          let showPanel = !showCropper;
+          if (showCropper) {
             self.showWidget({left: 0, top: 0});
           } else {
             self.hideWidget();
@@ -130,7 +134,7 @@ class TranslatorExtension {
   }
 
   hideWidget() {
-    if (this.widget) {
+    if (this.widget && !MessageHub.getInstance().store.showCropper) {
       this.widget.style.display = 'none';
       if (this.translatePanel) {
         this.translatePanel.setSelectedText('');
@@ -140,6 +144,8 @@ class TranslatorExtension {
 
   watchMousedownOnDocument() {
     document.addEventListener('mousedown', (e) => {
+      console.log('doc mousedown');
+      console.log(e.currentTarget, e.target);
       this.hideWidget();
       this.isMousedown = true;
     });

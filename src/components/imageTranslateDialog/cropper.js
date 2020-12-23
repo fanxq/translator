@@ -1,5 +1,7 @@
 import MessageHub from '../../content_scripts/messageHub';
+import mixin from './mixin';
 export default {
+  mixins: [mixin],
   data() {
     return {
       canvasWidth: window.screen.width,
@@ -47,7 +49,7 @@ export default {
         let x = Math.min(ev.offsetX, this.startX);
         let y = Math.min(ev.offsetY, this.startY);
         if (width <= 20 || height <= 20) {
-          alert('所截图片尺寸过小，请重新截取！');
+          this.showMsg('所截图片尺寸过小，请重新截取！', 2000);
           this.resetCanvas();
           this.pressed = false;
           return;
@@ -71,7 +73,7 @@ export default {
           };
           image.src = data;
         }).catch(err => {
-          alert(`获取截图失败：${err}`);
+          this.showMsg(`获取截图失败：${err}`);
         });
       }
       this.pressed = false;
@@ -86,7 +88,6 @@ export default {
         let clipHeight = ev.offsetY - this.startY;
         this.draw(clipWidth, clipHeight);
       } else {
-        //console.log(this.$refs.tips.getBoundingClientRect());
         this.setCursorStyle(`url("${chrome.runtime.getURL('images/cut.png')}") 12 10, auto`);
         if (!this.tipsHeight && !this.tipsWidth) {
           let rect = this.$refs.tips.getBoundingClientRect();
@@ -136,7 +137,11 @@ export default {
   },
   render() {
     return (
-      <section class="cropper" style={{display: this.isShow ? 'block' : 'none'}}> 
+      <section 
+        class={['cropper', this.isShowMsg && 'show-msg']} 
+        msg={this.msg}
+        style={{display: this.isShow ? 'block' : 'none'}}
+      > 
         <canvas 
           ref="canvasOfCropper"
           width={this.canvasWidth} 

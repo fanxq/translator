@@ -94,7 +94,7 @@ export default {
       }
     },
     hidePanel() {
-      MessageHub.getInstance().store.showTranslatePanel = false;
+      MessageHub.getInstance().store.showCropper = true;
     },
   },
   watch: {
