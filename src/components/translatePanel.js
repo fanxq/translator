@@ -143,7 +143,7 @@ export default {
           <button class="btn tooltips" tips="目标语言" on={{click: () => this.openSelectLanguageDialog('to')}}>{this.toLang}</button>
         </div>
         <div class="btn-group">
-          <button class="btn" onClick={this.toggleResult}>{this.isTranslated ? '查看原文' : '翻译'}</button>
+          <button class="btn" onClick={this.toggleResult}>{this.isTranslated ? '返回原文' : '翻译'}</button>
           <button class="btn" 
             style={{marginLeft: '10px', display: this.enableScreenshot ? 'inline-block' : 'none'}}
             on={{click: this.showCropper}} >

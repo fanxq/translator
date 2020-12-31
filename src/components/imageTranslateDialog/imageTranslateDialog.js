@@ -112,7 +112,7 @@ export default {
       });
     },
     translate() {
-      if (this.recognizeResult !== this.displayedResult) {
+      if (this.recognizeResult !== this.displayedResult && !this.isTranslated) {
         this.showMsg('识别文本已被修改，将使用修改后的文本进行翻译！', 2500);
         this.recognizeResult = this.displayedResult;
       }

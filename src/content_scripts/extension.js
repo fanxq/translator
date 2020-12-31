@@ -144,9 +144,8 @@ class TranslatorExtension {
 
   watchMousedownOnDocument() {
     document.addEventListener('mousedown', (e) => {
-      console.log('doc mousedown');
-      console.log(e.currentTarget, e.target);
       this.hideWidget();
+      this.isSelected = false;
       this.isMousedown = true;
     });
   }
