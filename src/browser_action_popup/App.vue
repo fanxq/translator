@@ -5,7 +5,7 @@
       <switch-button v-model="enable"/>
     </div>
     <div class="option-item">
-      <span>启用截图翻译<span class="tag">(实验功能)</span></span>
+      <span>启用截图翻译</span>
       <switch-button v-model="enableScreenshot" :disabled="!enable"/>
     </div>
     <div class="option-item" style="margin-top: 10px;" v-show="enableScreenshot">

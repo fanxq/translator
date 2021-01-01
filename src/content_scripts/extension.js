@@ -204,7 +204,7 @@ class TranslatorExtension {
       
       new Promise((resolve, reject) => {
         chrome.storage.local.get({
-          'enable': true
+          'enable': false
         }, function (result) {
           resolve(result);
         });
