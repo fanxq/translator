@@ -1,6 +1,6 @@
 {
-  "name": "translation",
-  "version": "0.0.1",
+  "name": "translator",
+  "version": "1.0.0",
   "description": "translation",
   "main": "index.js",
   "scripts": {
@@ -12,18 +12,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fanxq/translation.git"
+    "url": "git+https://github.com/fanxq/translator.git"
   },
   "keywords": [
-    "translation",
+    "translate",
     "chrome-extension"
   ],
   "author": "fanxq",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fanxq/translation/issues"
+    "url": "https://github.com/fanxq/translator/issues"
   },
-  "homepage": "https://github.com/fanxq/translation#readme",
+  "homepage": "https://github.com/fanxq/translator#readme",
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "babel-loader": "^8.1.0",

@@ -1,6 +1,6 @@
 {
-	  "name": "translate",
-	  "description": "划词翻译",
+	  "name": "translator",
+	  "description": "翻译插件",
 	  "version": "1.0.0",
 	  "permissions": [	
 	    "tabs", "<all_urls>", "activeTab", "storage"
@@ -25,7 +25,7 @@
 			}
 		],
 	  "browser_action": {
-			"default_title": "划词翻译",
+			"default_title": "翻译插件",
 			"default_icon":"images/icon48.png",
 			"default_popup": "browser_action_popup/popup.html"
 		},
