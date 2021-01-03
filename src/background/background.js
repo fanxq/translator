@@ -92,3 +92,12 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
     });
   }
 });
+
+chrome.commands.onCommand.addListener((command) => {
+  chrome.tabs.query({active: true}, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, {
+      cmd: 'showCropper',
+      from: 'command'
+    });
+  });
+});

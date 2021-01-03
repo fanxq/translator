@@ -10,6 +10,15 @@
 			"48": "images/icon48.png",
 			"128": "images/icon128.png"
 		},
+		"commands": {
+			"show_cropper": {
+				"suggested_key": {
+					"default": "Ctrl+Shift+X",
+					"mac": "Command+Shift+X"
+				},
+				"description": "开启截图翻译"
+			}
+		},
 		"background": {
 			"scripts":["background.js"],
 	    "persistent": true

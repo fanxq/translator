@@ -78,8 +78,15 @@ export default {
       
     },
     showCropper() {
-      this.$showCropper();
-      this.hidePanel();
+      chrome.storage.local.get({
+        'enable': false,
+        'enableScreenshot': false
+      }, (result) => {
+        if (result.enable && result.enableScreenshot) {
+          this.$showCropper();
+          this.hidePanel();
+        }
+      });
     },
     resetData() {
       this.isTranslated = false;

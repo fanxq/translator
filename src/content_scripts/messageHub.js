@@ -20,7 +20,7 @@ export default class MessageHub {
   init() {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request) {
-        if (request.from === 'popup' && request.cmd === 'showCropper') {
+        if ((request.from === 'popup' || request.from === 'command') && request.cmd === 'showCropper') {
           this.eventBus.$emit('show-cropper');
           return;
         }

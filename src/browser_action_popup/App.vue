@@ -5,7 +5,7 @@
       <switch-button v-model="enable"/>
     </div>
     <div class="option-item">
-      <span>启用截图翻译</span>
+      <span>启用截图翻译<span class="tag">Ctrl+Shift+X</span></span>
       <switch-button v-model="enableScreenshot" :disabled="!enable"/>
     </div>
     <div class="option-item" style="margin-top: 10px;" v-show="enableScreenshot">
@@ -70,8 +70,8 @@ export default {
     font-family: sans-serif;
     padding: 8px;
     .tag {
-      font-size: 12px;
-      color:#4b8bf4;
+      margin-left: 24px;
+      color: #999;
     }
     &:first-child {
       border-bottom: 1px solid #ccc;
