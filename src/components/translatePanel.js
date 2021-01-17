@@ -122,6 +122,11 @@ export default {
           text: val
         }).then(result => {
           this.fromCode = (result && result.toLowerCase()) || 'auto';
+          if (this.fromCode !== 'zh-cn') {
+            this.toCode = 'zh-cn';
+          } else {
+            this.toCode = 'en';
+          }
         }).catch(err => {
           console.log(err);
         });
