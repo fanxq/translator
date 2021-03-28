@@ -87,14 +87,14 @@ chrome.runtime.onMessage.addListener(async function (request, sender, sendRespon
     let messageId = request.messageId;
     let result = await messageHandler(request);
     messageId && (result.messageId = messageId);
-    chrome.tabs.query({active: true}, function(tabs) {
+    chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, result);
     });
   }
 });
 
 chrome.commands.onCommand.addListener((command) => {
-  chrome.tabs.query({active: true}, function(tabs) {
+  chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, {
       cmd: 'showCropper',
       from: 'command'
