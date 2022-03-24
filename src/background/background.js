@@ -1,4 +1,5 @@
-const Translate = require('google-translate-api');
+// const Translate = require('google-translate-api');
+import Translate from '../api/googleTranslateApi';
 const { createWorker } = require('tesseract.js');
 
 const LANG_MAP = {
