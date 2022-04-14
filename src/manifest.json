@@ -1,49 +1,51 @@
 {
-	  "name": "translator",
-	  "description": "翻译插件",
-	  "version": "1.0.0",
-	  "permissions": [	
-	    "tabs", "<all_urls>", "activeTab", "storage"
+	"manifest_version": 3,
+	"name": "translatorX",
+	"description": "翻译插件",
+	"version": "1.1.0",
+	"permissions": [
+		"tabs", "storage"
+	],
+	"icons": {
+		"16": "images/icon16.png",
+		"48": "images/icon48.png",
+		"128": "images/icon128.png"
+	},
+	"commands": {
+		"show_cropper": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+X",
+				"mac": "Command+Shift+X"
+			},
+			"description": "开启截图翻译"
+		}
+	},
+	"background": {
+        "service_worker": "background.js"
+    },
+	"content_scripts": [{
+		"js": ["lib/webcomponentsjs/webcomponents-bundle.js","contentScript.js"],
+		"matches": [
+			"<all_urls>"
 		],
-		"icons": {
-			"16": "images/icon16.png",
-			"48": "images/icon48.png",
-			"128": "images/icon128.png"
-		},
-		"commands": {
-			"show_cropper": {
-				"suggested_key": {
-					"default": "Ctrl+Shift+X",
-					"mac": "Command+Shift+X"
-				},
-				"description": "开启截图翻译"
-			}
-		},
-		"background": {
-			"scripts":["background.js"],
-	    "persistent": true
-	  },
-		"content_scripts": [
-			{
-				"js": ["main.js"],
-				"matches": [
-					"http://*/*",
-					"https://*/*"
-				],
-				"run_at": "document_start"
-			}
-		],
-	  "browser_action": {
-			"default_title": "翻译插件",
-			"default_icon":"images/icon48.png",
-			"default_popup": "browser_action_popup/popup.html"
-		},
-		"content_security_policy": "script-src 'self' 'unsafe-eval'; script-src-elem 'self' 'unsafe-eval' chrome-extension:; object-src 'self'",
-		"manifest_version": 2,
-		"web_accessible_resources": [
-			"images/*.png",
-			"traineddata/*.traineddata.gz",
-			"lib/tesseract-core.wasm.js",
-			"lib/worker.min.js"
-		]
+		"run_at": "document_end"
+	}],
+	"action": {
+		"default_title": "翻译插件",
+		"default_icon": "images/icon48.png",
+		"default_popup": "popup/index.html"
+	},
+	"web_accessible_resources": [
+		{
+			"resources": [
+				"images/*.png",
+				"traineddata/*.traineddata.gz",
+				"lib/tesseract-core.wasm.js",
+				"lib/worker.min.js"
+			],
+			"matches": [
+                "<all_urls>"
+            ]
+		}
+	]
 }
