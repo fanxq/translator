@@ -3,20 +3,21 @@
          <translator-panel />
     </div>
     <div v-if="props.visible == VisibleType.SHOWM_SCREEN_CAPTURE_COMP">
-        <div class="screen-capture"></div>
+        <screen-capture-comp />
     </div>
 </template>
 <script lang="ts" setup>
     import {  defineProps, PropType, computed, watch } from 'vue';
-    import { VisibleType } from './model';
+    import { VisibleType, Point } from './model';
     import { useStore } from './store/index';
     import TranslatorPanel from './components/TranslatorPanel.vue';
+    import ScreenCaptureComp from './components/ScreenCaptureComp.vue';
     // import Toolbar from './components/Toolbar.vue';
 
-    interface IPoint {
-        x: number,
-        y: number
-    }
+    // interface IPoint {
+    //     x: number,
+    //     y: number
+    // }
 
     const store = useStore();
     const props = defineProps({
@@ -25,7 +26,7 @@
             default: VisibleType.NONE
         },
         pos: {
-            type: Object as PropType<IPoint>,
+            type: Object as PropType<Point>,
             default: {x: 0, y: 0}
         },
         selectedText: {
@@ -56,13 +57,5 @@
         position: absolute;
         left: v-bind(left);
         top: v-bind(top);
-    }
-    .screen-capture {
-        position: fixed;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.2);
-        top: 0px;
-        left: 0px;
     }
 </style>

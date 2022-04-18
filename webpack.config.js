@@ -9,6 +9,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     mode: process.env.NODE_ENV,
+    optimization: {
+        minimize: false,
+    },
     entry: {
         popup: path.resolve(__dirname, './src/popup/index.ts'),
         contentScript: path.resolve(__dirname, './src/contentScripts/index.ts'),

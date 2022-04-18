@@ -1,17 +1,10 @@
 import { defineCustomElement } from 'vue';
-import { VisibleType } from './model';
+import { VisibleType, Point } from './model';
 import Widget from './Widget.ce.vue';
 
 const MaxWidgetWidth = 350;
 
-class Point {
-    public x:number;
-    public y:number;
-    constructor(x: number = 0, y: number = 0) {
-        this.x = x;
-        this.y = y;
-    }
-}
+
 
 export default class Extension {
     private startPoint: Point;
@@ -133,8 +126,8 @@ export default class Extension {
             }
         }
         widget.pos = new Point(left, top);
-        widget.visible = VisibleType.SHOW_TRANSLATOR_PANEL;
-        // widget.visible = VisibleType.SHOWM_SCREEN_CAPTURE_COMP;
+        //widget.visible = VisibleType.SHOW_TRANSLATOR_PANEL;
+        widget.visible = VisibleType.SHOWM_SCREEN_CAPTURE_COMP;
         this.startPoint = new Point(0, 0);
         this.endPoint = new Point(0, 0);
         this.isMousedown = false;

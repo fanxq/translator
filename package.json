@@ -29,6 +29,7 @@
   "dependencies": {
     "core-js": "^3.11.0",
     "element-plus": "^2.1.9",
+    "mitt": "^3.0.0",
     "vue": "^3.2.31"
   },
   "devDependencies": {

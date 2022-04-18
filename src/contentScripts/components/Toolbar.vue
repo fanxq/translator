@@ -1,43 +1,56 @@
 <template>
    <div class="panel" >
-        <logo/>
+        <logo v-if="props.showLogo"/>
         <div class="toolbar">
-            <span>翻译为</span>
+            <slot name="label"><span>翻译为</span></slot>
             <el-select 
                 class="select"
+                :disabled="props.disabled"
                 v-model="selectedLangCode" 
                 :teleported="false" 
                 placeholder="选择目标语言"
             >
                 <el-option
-                    v-for="item in options"
+                    v-for="item in props.options"
                     :key="item.code"
                     :label="item.name"
                     :value="item.code"
                 />
             </el-select>
-            <el-button type="primary" @click="okHandler">确定</el-button>
+            <el-button :disabled="props.disabled" type="primary" @click="okHandler">确定</el-button>
         </div>
     </div>
 </template>
 <script lang="ts" setup>
-    import { ref, defineEmits } from 'vue';
+    import { ref, defineEmits, defineProps, PropType } from 'vue';
     import Logo from './Logo.vue';
-    import { LangInfoList } from '../../assets/config/languages';
+    import { LangInfo, LangInfoList } from '../../assets/config/languages';
     import { useStore } from '../store/index';
     const store = useStore();
     const selectedLangCode = ref('en');
     const options = ref(LangInfoList);
-    const emits = defineEmits<{ (event: 'toggle', name: string): void }>();
+    const props = defineProps({
+        showLogo: {
+            type: Boolean,
+            default: true
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+        options: {
+            type: Array as PropType<LangInfo[]>,
+            default: LangInfoList
+        }
+    });
+    const emits = defineEmits<{ 
+        (event: 'toggle', name: string): void;
+        (event: 'ok', select: string): void;
+     }>();
     const okHandler = async () => {
         store.action.getTranslation({});
         emits('toggle', 'result-panel');
-        // alert(store.state.selectedText);
-        // const text = store.state.selectedText;
-        // const result = await translate(text, {from:'auto', to: 'en'});
-        // if (result) {
-        //     alert(result.text);
-        // }
+        emits('ok', selectedLangCode.value);
     };
     
 </script>
@@ -54,9 +67,9 @@
             align-items: center;
             margin-left: 15px;
             .select {
-                margin: 0px 30px 0px 8px;
+                margin: 0px 10px 0px 8px;
                 :deep(.el-input__inner) {
-                    width: 150px;
+                    width: 120px;
                     padding-right: 35px !important;
                 }
             }

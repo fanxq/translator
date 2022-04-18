@@ -9,6 +9,12 @@ function updateSelectedText(state: IState) {
 function getTranslation(state: IState) {
     return async (options: ITranslateOption) => {
         state.isTranslating = true;
+        state.translatedText = '';
+        // await new Promise((resolve) => {
+        //     setTimeout(() => {
+        //         resolve(1);
+        //     }, 60 * 10 * 1000);
+        // });
         const result = await translate(state.selectedText, options);
         if (result.text) {
             state.translatedText = result.text;

@@ -4,8 +4,11 @@
 	"description": "翻译插件",
 	"version": "1.1.0",
 	"permissions": [
-		"tabs", "storage"
+		"tabs", "activeTab", "storage"
 	],
+	"host_permissions": [
+        "<all_urls>"
+    ],
 	"icons": {
 		"16": "images/icon16.png",
 		"48": "images/icon48.png",

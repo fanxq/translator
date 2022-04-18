@@ -1,5 +1,5 @@
 <template>
-    <div ref="panel" class="result-panel">
+    <div :class="['result-panel', isLoading ? 'loading' : '']" :tips="tips">
         <div class="title">
             <logo />
             <h3>划词翻译</h3>
@@ -33,7 +33,7 @@
                     :value="item.code"
                 />
             </el-select>
-            <el-button type="primary" @click="okHandler">翻译</el-button>
+            <el-button type="primary" @click="translateHandler">翻译</el-button>
         </div>
         <div class="output">
             {{store.state.translatedText}}
@@ -41,8 +41,7 @@
     </div>
 </template>
 <script setup lang="ts">
-    import { ref, computed, watch, nextTick } from 'vue';
-    import { ElLoading } from 'element-plus';
+    import { ref, computed } from 'vue';
     import Logo from './Logo.vue';
     import { LangInfoList } from '../../assets/config/languages';
     import { useStore } from '../store/index';
@@ -50,23 +49,43 @@
     const sourceLangCode = ref('auto');
     const targetLangCode = ref('en');
     const options = ref(LangInfoList);
-    const panel = ref<HTMLElement | undefined>(undefined);
-    const isLoading = computed(() => store.state.isTranslating);
-    watch(() => isLoading, (_isLoading) => {
-        let loadingInstance: any = null;
-        if (_isLoading) {
-          loadingInstance =  ElLoading.service({target: panel.value});
-        } else {
-            nextTick(() => {
-                if (loadingInstance) {
-                    loadingInstance.close()
-                }
-            });
+    const tips = ref('翻译中.');
+    setInterval(() => {
+        if (tips.value === '翻译中...') {
+            tips.value = '翻译中.';
+            return;
         }
-    });
+        tips.value = tips.value + '.';
+    }, 500);
+    // const panel = ref<HTMLElement | undefined>(undefined);
+    const isLoading = computed(() => store.state.isTranslating);
+    // watch(() => store.state.isTranslating, (isLoading) => {
+    //     console.log('loading', isLoading);
+    // }, {immediate: true});
+
+    const translateHandler = () => {
+        console.log('translate');
+    }
 </script>
 <style lang="less" scoped>
     .result-panel {
+        user-select: none;
+        &.loading {
+            position: relative;
+            &::before {
+                position: absolute;
+                content: attr(tips);
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                background-color: rgba(255, 255, 255, 0.8);
+                z-index: 9;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
         .title {
             display: flex;
             align-items: center;
